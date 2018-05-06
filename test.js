@@ -70,4 +70,13 @@ const wrappedArrayVals = wrapList(Object.values({ x: 1, y: 2, z: 6, a: 8 }))
 
 console.log(wrappedArrayVals);
 
+const wrappedMap3 = wrapMap(
+    new Map().set('x', 1).set('y', 2)
+)
+    .map(([key, val]) => [key + val, val])
+    .foreach(([key, val]) => console.log(`key is ${key}, value is ${val}`))
+    .reduce((result, [, val]) => result + val, 0);
+
+console.log(wrappedMap3);
+
 //const notIterable = wrap({}, () => ({}), {});

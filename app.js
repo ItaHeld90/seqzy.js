@@ -8,12 +8,12 @@ const wrap = curry((iterableObj, aggregate, empty) => {
 
     const wrapValue = (val) => wrap(val, aggregate, empty);
 
-    const reduce = (reducer, initialValue) => {
+    const reduce = (reducerFn, initialValue) => {
         let result = initialValue;
         let idx = 0;
 
         for (let item of iterableObj) {
-            result = reducer(result, item, idx, iterableObj)
+            result = reducerFn(result, item, idx, iterableObj)
             idx++;
         }
 
@@ -35,13 +35,22 @@ const wrap = curry((iterableObj, aggregate, empty) => {
         reduceWrap
     );
 
+    const foreach = (fn) => {
+        for (let item of iterableObj) {
+            fn(item);
+        }
+
+        return wrapValue(iterableObj);
+    }
+
     const value = () => iterableObj;
 
     return {
         value,
         map,
         filter,
-        reduce
+        reduce,
+        foreach
     };
 });
 
@@ -78,5 +87,5 @@ module.exports = {
     wrapMap,
     wrapSet,
     wrapString,
-    wrapList
+    wrapList,
 };
