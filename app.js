@@ -4,7 +4,7 @@ const wrapSet = require('./src/wrappers/set');
 const wrapString = require('./src/wrappers/string');
 const wrapList = require('./src/wrappers/list');
 
-const wrap = (iterableObj, aggregate, empty) => {
+const wrap = (iterableObj, aggregate, createEmpty) => {
     if (iterableObj instanceof Map) {
         return wrapMap(iterableObj);
     }
@@ -21,7 +21,7 @@ const wrap = (iterableObj, aggregate, empty) => {
         return wrapList(iterableObj);
     }
 
-    return wrapIterable(iterableObj, aggregate, empty);
+    return wrapIterable(iterableObj, aggregate, createEmpty);
 }
 
 module.exports = {
