@@ -1,5 +1,5 @@
 const { mapReducer, filterReducer, isIterable } = require('./help-utils');
-const { curry } = require('ramda/src');
+const { curry, concat } = require('ramda/src');
 
 // wrapper
 const wrap = curry((iterableObj, aggregate, empty) => {
@@ -61,8 +61,16 @@ const wrapSet = (set) =>
         new Set()
     );
 
+const wrapString = (str) =>
+    wrap(
+        str,
+        concat,
+        ''
+    );
+
 module.exports = {
     wrap,
     wrapMap,
-    wrapSet
+    wrapSet,
+    wrapString
 };
