@@ -47,6 +47,22 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
         .next()
         .value;
 
+    const take = (times) => {
+        let counter = times;
+        let result = [];
+
+        for (let item of iterableObj) {
+            if (counter <= 0) {
+                break;
+            }
+
+            result.push(item);
+            counter--;
+        }
+
+        return wrapValue(result);
+    }
+
     const value = () => iterableObj;
 
     return {
@@ -55,7 +71,8 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
         filter,
         reduce,
         forEach,
-        head
+        head,
+        take
     };
 });
 
