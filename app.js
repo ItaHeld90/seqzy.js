@@ -1,5 +1,5 @@
 const { mapReducer, filterReducer, isIterable } = require('./help-utils');
-const { curry, pipe } = require('ramda/src');
+const { curry } = require('ramda/src');
 
 // wrapper
 const wrap = curry((iterableObj, aggregate, empty) => {
