@@ -1,4 +1,4 @@
-const { wrap, wrapMap, wrapSet, wrapString } = require("./app");
+const { wrap, wrapMap, wrapSet, wrapString, wrapList } = require("./app");
 
 const myArr = [1, 2, 3];
 const myMap = new Map().set('bla', 'ga').set('a', 'x');
@@ -9,7 +9,7 @@ const wrappedMap =
         (result, [key, val]) => result.set(key, val),
         new Map()
     )
-        //.map(([key, val]) => [key + val, val])
+        .map(([key, val]) => [key + val, val])
         .filter(([key, val]) => key.length > 2)
         .value();
 
@@ -59,8 +59,15 @@ const wrappedStr = wrapString('hello world')
     .map(c => c + c)
     .map(c => c.toUpperCase())
     .reduce((result, c) => [result, c].join('-'), '')
-    //.value();
+//.value();
 
 console.log(wrappedStr);
+
+const wrappedArrayVals = wrapList(Object.values({ x: 1, y: 2, z: 6, a: 8 }))
+    .filter(val => val % 2 === 0)
+    .map(val => val / 2)
+    .value();
+
+console.log(wrappedArrayVals);
 
 //const notIterable = wrap({}, () => ({}), {});

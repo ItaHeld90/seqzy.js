@@ -1,13 +1,19 @@
-// helpers
-const mapReducer = (mapperFn, aggregator) =>
-    (result, item) =>
-        aggregator(result, mapperFn(item));
+const { curry } = require('ramda/src');
 
-const filterReducer = (predicateFn, aggregator) =>
-    (result, item) =>
-        predicateFn(item)
-            ? aggregator(result, item)
-            : result
+const mapReducer = curry(
+    (aggregator, mapperFn) =>
+        (result, item) =>
+            aggregator(result, mapperFn(item))
+);
+
+const filterReducer = curry(
+    (aggregator, predicateFn) =>
+        (result, item) =>
+            predicateFn(item)
+                ? aggregator(result, item)
+                : result
+);
+
 
 const isIterable = (obj) => {
     if (obj == null) {
