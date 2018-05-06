@@ -1,13 +1,10 @@
-const { wrap, wrapMap, wrapSet, wrapString, wrapList } = require("./app");
+const { wrap, wrapList } = require("./app");
 
-const myArr = [1, 2, 3];
 const myMap = new Map().set('bla', 'ga').set('a', 'x');
 
 const wrappedMap =
     wrap(
-        myMap,
-        (result, [key, val]) => result.set(key, val),
-        new Map()
+        myMap
     )
         .map(([key, val]) => [key + val, val])
         .filter(([key, val]) => key.length > 2)
@@ -15,11 +12,11 @@ const wrappedMap =
 
 console.log(wrappedMap);
 
+const myArr = [1, 2, 3];
+
 let wrappedArr =
     wrap(
-        myArr,
-        (result, val) => [...result, val],
-        []
+        myArr
     )
         .map(val => val * 2)
         .filter(val => val > 3)
@@ -46,7 +43,7 @@ const wrappedObj = wrap(
 
 console.log(wrappedObj);
 
-const wrappedMap2 = wrapMap(
+const wrappedMap2 = wrap(
     new Map().set('x', 1).set('y', 2)
 )
     .map(([key, val]) => [key + val, val])
@@ -54,7 +51,7 @@ const wrappedMap2 = wrapMap(
 
 console.log(wrappedMap2);
 
-const wrappedStr = wrapString('hello world')
+const wrappedStr = wrap('hello world')
     .filter(c => c !== ' ')
     .map(c => c + c)
     .map(c => c.toUpperCase())
@@ -70,7 +67,7 @@ const wrappedArrayVals = wrapList(Object.values({ x: 1, y: 2, z: 6, a: 8 }))
 
 console.log(wrappedArrayVals);
 
-const wrappedMap3 = wrapMap(
+const wrappedMap3 = wrap(
     new Map().set('x', 1).set('y', 2)
 )
     .map(([key, val]) => [key + val, val])
