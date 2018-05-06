@@ -14,7 +14,6 @@ const filterReducer = curry(
                 : result
 );
 
-
 const isIterable = (obj) => {
     if (obj == null) {
         return false;
@@ -22,8 +21,13 @@ const isIterable = (obj) => {
     return typeof obj[Symbol.iterator] === 'function';
 }
 
+const makeIterator = (iterable) => {
+    return iterable[Symbol.iterator]();
+}
+
 module.exports = {
     mapReducer,
     filterReducer,
-    isIterable
+    isIterable,
+    makeIterator
 }

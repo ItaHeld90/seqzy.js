@@ -55,8 +55,7 @@ const wrappedStr = wrap('hello world')
     .filter(c => c !== ' ')
     .map(c => c + c)
     .map(c => c.toUpperCase())
-    .reduce((result, c) => [result, c].join('-'), '')
-//.value();
+    .reduce((result, c) => [result, c].join('-'), '');
 
 console.log(wrappedStr);
 
@@ -75,5 +74,12 @@ const wrappedMap3 = wrap(
     .reduce((result, [, val]) => result + val, 0);
 
 console.log(wrappedMap3);
+
+const header = wrap(
+    new Map().set('x', 1).set('y', 2)
+)
+    .head()
+
+console.log(header);
 
 //const notIterable = wrap({}, () => ({}), {});

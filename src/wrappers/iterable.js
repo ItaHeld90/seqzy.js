@@ -1,4 +1,4 @@
-const { mapReducer, filterReducer, isIterable } = require('../helper-utils');
+const { mapReducer, filterReducer, isIterable, makeIterator } = require('../helper-utils');
 const { curry, partialRight, pipe } = require('ramda/src');
 
 // wrapper
@@ -43,6 +43,10 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
         return wrapValue(iterableObj);
     }
 
+    const head = () => makeIterator(iterableObj)
+        .next()
+        .value;
+
     const value = () => iterableObj;
 
     return {
@@ -50,7 +54,8 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
         map,
         filter,
         reduce,
-        forEach
+        forEach,
+        head
     };
 });
 
