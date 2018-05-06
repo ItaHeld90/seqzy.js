@@ -1,7 +1,8 @@
 const { mapReducer, filterReducer } = require('./help-utils');
+const curry = require('ramda/src/curry');
 
 // wrapper
-function wrap(iterableObj, aggregate, empty) {
+const wrap = curry((iterableObj, aggregate, empty) => {
     const wrapValue = (val) => wrap(val, aggregate, empty);
 
     const map = (mapperFn) => {
@@ -39,7 +40,7 @@ function wrap(iterableObj, aggregate, empty) {
         map,
         filter
     };
-}
+});
 
 module.exports = {
     wrap
