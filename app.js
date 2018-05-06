@@ -59,7 +59,7 @@ const wrapSet = (set) =>
         set,
         (result, val) => set.add(value),
         new Set()
-    )
+    );
 
 module.exports = {
     wrap,
