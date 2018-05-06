@@ -13,7 +13,7 @@ const wrap = curry((iterableObj, aggregate, empty) => {
         let idx = 0;
 
         for (let item of iterableObj) {
-            result = reducer(result, item, idx)
+            result = reducer(result, item, idx, iterableObj)
             idx++;
         }
 
