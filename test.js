@@ -86,8 +86,9 @@ const sentGen = require('./test-utils');
 const taken = wrapList(
     sentGen
 )
-    .take(20)
+    .take(1000)
     .filter(sent => sent.includes('pukka'))
+    .take(10)
     .forEach(console.log);
 
 //const notIterable = wrap({}, () => ({}), {});

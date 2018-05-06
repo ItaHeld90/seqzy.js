@@ -49,14 +49,14 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
 
     const take = (times) => {
         let counter = times;
-        let result = [];
+        let result = createEmpty();
 
         for (let item of iterableObj) {
             if (counter <= 0) {
                 break;
             }
 
-            result.push(item);
+            result = aggregate(result, item);
             counter--;
         }
 
