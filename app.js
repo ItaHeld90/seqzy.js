@@ -43,7 +43,8 @@ const wrap = curry((iterableObj, aggregate, empty) => {
     return {
         value,
         map,
-        filter
+        filter,
+        reduce
     };
 });
 

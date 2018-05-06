@@ -58,7 +58,8 @@ const wrappedStr = wrapString('hello world')
     .filter(c => c !== ' ')
     .map(c => c + c)
     .map(c => c.toUpperCase())
-    .value();
+    .reduce((result, c) => [result, c].join('-'), '')
+    //.value();
 
 console.log(wrappedStr);
 
