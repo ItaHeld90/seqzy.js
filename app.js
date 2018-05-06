@@ -1,13 +1,4 @@
-// helpers
-const mapReducer = (mapperFn, aggregator) =>
-    (result, item) =>
-        aggregator(result, mapperFn(item));
-
-const filterReducer = (predicateFn, aggregator) =>
-    (result, item) =>
-        predicateFn(item)
-            ? aggregator(result, item)
-            : result
+const { mapReducer, filterReducer } = require('./help-utils');
 
 // wrapper
 function wrap(iterableObj, aggregate, empty) {
