@@ -1,9 +1,9 @@
-const { wrap } = require("./app");
+const { wrap, wrapMap, wrapSet } = require("./app");
 
 const myArr = [1, 2, 3];
 const myMap = new Map().set('bla', 'ga').set('a', 'x');
 
-let wrappedMap =
+const wrappedMap =
     wrap(
         myMap,
         (result, [key, val]) => result.set(key, val),
@@ -45,3 +45,13 @@ const wrappedObj = wrap(
     .value();
 
 console.log(wrappedObj);
+
+const wrappedMap2 = wrapMap(
+    new Map().set('x', 1).set('y', 2)
+)
+    .map(([key, val]) => [key + val, val])
+    .value();
+
+console.log(wrappedMap2)
+
+//const notIterable = wrap({}, () => ({}), {});

@@ -1,8 +1,11 @@
-const { mapReducer, filterReducer } = require('./help-utils');
-const curry = require('ramda/src/curry');
+const { mapReducer, filterReducer, isIterable } = require('./help-utils');
+const { curry, pipe } = require('ramda/src');
 
 // wrapper
 const wrap = curry((iterableObj, aggregate, empty) => {
+    // Temp: assert that the received object is iterable
+    console.assert(isIterable(iterableObj), 'not an iterable');
+
     const wrapValue = (val) => wrap(val, aggregate, empty);
 
     const map = (mapperFn) => {
@@ -35,13 +38,31 @@ const wrap = curry((iterableObj, aggregate, empty) => {
         return result;
     }
 
+    const value = () => iterableObj;
+
     return {
-        value: () => iterableObj,
+        value,
         map,
         filter
     };
 });
 
+const wrapMap = (map) =>
+    wrap(
+        map,
+        (result, [key, val]) => result.set(key, val),
+        new Map()
+    );
+
+const wrapSet = (set) =>
+    wrap(
+        set,
+        (result, val) => set.add(value),
+        new Set()
+    )
+
 module.exports = {
-    wrap
+    wrap,
+    wrapMap,
+    wrapSet
 };
