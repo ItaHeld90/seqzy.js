@@ -1,4 +1,4 @@
-const wrap = require('../wrapper');
+const wrap = require('./iterable');
 
 module.exports = function wrapSet(set) {
     return wrap(

@@ -1,8 +1,8 @@
-const wrapIterable = require('./src/wrappers/wrapper');
-const wrapMap = require('./src/wrappers/built-in/map');
-const wrapSet = require('./src/wrappers/built-in/set');
-const wrapString = require('./src/wrappers/built-in/string');
-const wrapList = require('./src/wrappers/built-in/list');
+const wrapIterable = require('./src/wrappers/iterable');
+const wrapMap = require('./src/wrappers/map');
+const wrapSet = require('./src/wrappers/set');
+const wrapString = require('./src/wrappers/string');
+const wrapList = require('./src/wrappers/list');
 
 const wrap = (iterableObj, aggregate, empty) => {
     if (iterableObj instanceof Map) {

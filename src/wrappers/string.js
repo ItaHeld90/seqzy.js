@@ -1,4 +1,4 @@
-const wrap = require('../wrapper');
+const wrap = require('./iterable');
 const { concat } = require('ramda/src');
 
 module.exports = function wrapString(str) {
