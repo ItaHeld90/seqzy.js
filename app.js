@@ -17,14 +17,9 @@ const wrap = (iterableObj, aggregate, createEmpty) => {
         return wrapString(iterableObj);
     }
 
-    if (iterableObj instanceof Array) {
-        return wrapList(iterableObj);
-    }
-
-    return wrapIterable(iterableObj, aggregate, createEmpty);
+    return wrapList(iterableObj);
 }
 
 module.exports = {
-    wrap,
-    wrapList
+    wrap
 };

@@ -66,6 +66,7 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
     const value = () => iterableObj;
 
     return {
+        [Symbol.iterator]: iterableObj[Symbol.iterator],
         value,
         map,
         filter,
