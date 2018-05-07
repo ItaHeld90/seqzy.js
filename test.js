@@ -94,4 +94,4 @@ for (let sent of wrappedSentGen.take(20)) {
     console.log(sent);
 }
 
-//const notIterable = wrap({}, () => ({}), {});
+// const notIterable = wrap({}, () => ({}), {});

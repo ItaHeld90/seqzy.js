@@ -3,9 +3,6 @@ const { curry, partialRight, pipe } = require('ramda/src');
 
 // wrapper
 const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
-    // Temp: assert that the received object is iterable
-    console.assert(isIterable(iterableObj), 'not an iterable');
-
     const wrapValue = (val) => wrapIterable(val, aggregate, createEmpty);
 
     const reduce = (reducerFn, initialValue) => {
