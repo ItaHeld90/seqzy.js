@@ -25,9 +25,19 @@ const makeIterator = (iterable) => {
     return iterable[Symbol.iterator]();
 }
 
+const extractIterator = (iterableObj) =>
+    () => {
+        const iterator = makeIterator(iterableObj);
+
+        return {
+            next: () => iterator.next()
+        };
+    };
+
 module.exports = {
     mapReducer,
     filterReducer,
     isIterable,
-    makeIterator
+    makeIterator,
+    extractIterator
 }

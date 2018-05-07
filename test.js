@@ -71,10 +71,7 @@ const wrappedMap3 = wrap(
     new Map().set('x', 1).set('y', 2)
 )
     .map(([key, val]) => [key + val, val])
-    .forEach(([key, val]) => console.log(`key is ${key}, value is ${val}`))
-    .reduce((result, [, val]) => result + val, 0);
-
-console.log(wrappedMap3);
+    .reduce((result, [, val]) => result + val, 0)
 
 const header = wrap(
     new Map().set('x', 1).set('y', 2)
@@ -83,12 +80,18 @@ const header = wrap(
 
 console.log(header);
 
-const taken = wrap(
+const wrappedSentGen = wrap(
     sentGen
-)
+);
+
+wrappedSentGen
     .take(1000)
     .filter(sent => sent.includes('pukka'))
     .take(10)
     .forEach(console.log);
+
+for (let sent of wrappedSentGen.take(20)) {
+    console.log(sent);
+}
 
 //const notIterable = wrap({}, () => ({}), {});
