@@ -1,6 +1,7 @@
 const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator, combineList } = require('../helper-utils');
-const { curry, partialRight, pipe } = require('ramda/src');
+const { curry, partialRight, pipe, identity } = require('ramda/src');
 const trans = require('../wrapper-transformations');
+const consumers = require('../wrapper-consumers');
 
 // wrapper
 const wrapIterable = (iterableObj, aggregate, createEmpty) => {
@@ -12,9 +13,14 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             rewrap
         );
 
-        const reduce =
-            (reducerFn, initialValue) =>
-                rewrapWithNewTrans(trans.reduce(reducerFn, initialValue));
+        // If any transformations were chained - execute them
+        // Else - return the iterable as is
+        const execTransformations =
+            transformations.length > 0
+                ? pipe(
+                    ...transformations
+                )
+                : identity;
 
         const map =
             mapperFn =>
@@ -28,17 +34,23 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             (times) =>
                 rewrapWithNewTrans(trans.take(times));
 
-        const forEach = (fn) => {
-            for (let item of nextIterableObj) {
-                fn(item);
-            }
-        }
+        const reduce = pipe(
+            execTransformations,
+            consumers.reduce
+        );
 
-        const head = () => makeIterator(nextIterableObj)
-            .next()
-            .value;
+        const forEach = pipe(
+            execTransformations,
+            consumers.forEach
+        );
 
-        const value = () => nextIterableObj;
+        const head = () => pipe(
+            execTransformations,
+            consumers.head
+        );
+
+        // const value = execTransformations;
+        const value = () => execTransformations(iterableObj);
 
         const result = {
             value,
@@ -51,7 +63,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
         };
 
         return result;
-    }([]);
+    }
+        ([]);
 };
 
 module.exports = wrapIterable;
