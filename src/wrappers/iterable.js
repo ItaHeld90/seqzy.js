@@ -2,7 +2,7 @@ const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator } =
 const { curry, partialRight, pipe } = require('ramda/src');
 
 // wrapper
-const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
+const wrapIterable = (iterableObj, aggregate, createEmpty) => {
     const wrapValue = (val) => wrapIterable(val, aggregate, createEmpty);
 
     const reduce = (reducerFn, initialValue) => {
@@ -72,6 +72,6 @@ const wrapIterable = curry((iterableObj, aggregate, createEmpty) => {
     };
 
     return result;
-});
+};
 
 module.exports = wrapIterable;
