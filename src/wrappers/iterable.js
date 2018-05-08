@@ -1,77 +1,57 @@
-const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator } = require('../helper-utils');
+const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator, combineList } = require('../helper-utils');
 const { curry, partialRight, pipe } = require('ramda/src');
+const trans = require('../wrapper-transformations');
 
 // wrapper
 const wrapIterable = (iterableObj, aggregate, createEmpty) => {
-    const wrapValue = (val) => wrapIterable(val, aggregate, createEmpty);
+    return function rewrap(transformations) {
+        const addTransformation = combineList(transformations);
 
-    const reduce = (reducerFn, initialValue) => {
-        let result = initialValue;
-        let idx = 0;
+        const rewrapWithNewTrans = pipe(
+            addTransformation,
+            rewrap
+        );
 
-        for (let item of iterableObj) {
-            result = reducerFn(result, item, idx, iterableObj)
-            idx++;
+        const reduce =
+            (reducerFn, initialValue) =>
+                rewrapWithNewTrans(trans.reduce(reducerFn, initialValue));
+
+        const map =
+            mapperFn =>
+                rewrapWithNewTrans(trans.map(mapperFn));
+
+        const filter =
+            predicateFn =>
+                rewrapWithNewTrans(trans.filter(predicateFn));
+
+        const take =
+            (times) =>
+                rewrapWithNewTrans(trans.take(times));
+
+        const forEach = (fn) => {
+            for (let item of nextIterableObj) {
+                fn(item);
+            }
         }
+
+        const head = () => makeIterator(nextIterableObj)
+            .next()
+            .value;
+
+        const value = () => nextIterableObj;
+
+        const result = {
+            value,
+            map,
+            filter,
+            reduce,
+            forEach,
+            head,
+            take
+        };
 
         return result;
-    }
-
-    const reduceWrap = pipe(
-        partialRight(reduce, [createEmpty()]),
-        wrapValue
-    );
-
-    const map = pipe(
-        mapReducer(aggregate),
-        reduceWrap
-    );
-
-    const filter = pipe(
-        filterReducer(aggregate),
-        reduceWrap
-    );
-
-    const forEach = (fn) => {
-        for (let item of iterableObj) {
-            fn(item);
-        }
-    }
-
-    const head = () => makeIterator(iterableObj)
-        .next()
-        .value;
-
-    const take = (times) => {
-        let counter = times;
-        let result = createEmpty();
-
-        for (let item of iterableObj) {
-            if (counter <= 0) {
-                break;
-            }
-
-            result = aggregate(result, item);
-            counter--;
-        }
-
-        return wrapValue(result);
-    }
-
-    const value = () => iterableObj;
-
-    const result = {
-        [Symbol.iterator]: extractIterator(iterableObj), // Making the wrapper iterable
-        value,
-        map,
-        filter,
-        reduce,
-        forEach,
-        head,
-        take
-    };
-
-    return result;
+    }([]);
 };
 
 module.exports = wrapIterable;

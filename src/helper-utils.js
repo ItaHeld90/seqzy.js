@@ -34,10 +34,15 @@ const extractIterator = (iterableObj) =>
         };
     };
 
+const combineList = curry(
+    (list, item) => [...list, item]
+);
+
 module.exports = {
     mapReducer,
     filterReducer,
     isIterable,
     makeIterator,
-    extractIterator
-}
+    extractIterator,
+    combineList
+};
