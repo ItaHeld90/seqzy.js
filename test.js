@@ -90,6 +90,13 @@ const pukkaGen = sentGen1000
 
 console.log(balonGen.head());
 
+const setWrapper = wrap(
+    new Set().add('a').add('b')
+)
+    .map(val => val.toUpperCase())
+    .value();
+
+console.log(setWrapper);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
