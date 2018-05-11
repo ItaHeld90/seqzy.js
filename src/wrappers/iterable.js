@@ -1,4 +1,4 @@
-const { combineList, makeIterator, listHead } = require('../helper-utils');
+const { combineList, makeIterator, iterableHead } = require('../helper-utils');
 const { pipe } = require('ramda/src');
 const trans = require('../wrapper-transformations');
 const consumers = require('../wrapper-consumers');
@@ -17,6 +17,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
         const execTransformationsOnIterable =
             () =>
                 execTransformations(transformations, iterableObj);
+
+        const construct = consumers.reduce(aggregate, createEmpty());
 
         const map =
             mapperFn =>
@@ -40,9 +42,14 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             return consumers.forEach(fn, transformed);
         };
 
-        const head = () => listHead(take(1).value());
+        // using take 1 to return a wrapper with only 1 value,
+        // then unwrapping the value
+        const head = () => iterableHead(take(1).value());
 
-        const value = execTransformationsOnIterable;
+        const value = pipe(
+            execTransformationsOnIterable,
+            construct
+        );
 
         const result = {
             [Symbol.iterator]: () => {

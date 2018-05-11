@@ -29,7 +29,10 @@ const combineList = curry(
     (list, item) => [...list, item]
 );
 
-const listHead = list => list[0];
+const iterableHead = iterableObj => {
+    const iterator = makeIterator(iterableObj);
+    return iterator.next().value;
+};
 
 module.exports = {
     mapReducer,
@@ -37,5 +40,5 @@ module.exports = {
     isIterable,
     makeIterator,
     combineList,
-    listHead
+    iterableHead
 };
