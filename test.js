@@ -110,6 +110,15 @@ const everyTest =
         .every(val => val.includes('pukka'));
 
 console.log(everyTest);
+
+// Test Find
+const findTest = wrap(
+    [1, 2, 3, 4]
+)
+    .find(val => val > 2);
+
+console.log('find:', findTest);
+
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

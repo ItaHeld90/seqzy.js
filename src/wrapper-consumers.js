@@ -47,9 +47,22 @@ const every = curry(
     }
 )
 
+const find = curry(
+    (predicateFn, iterableObj) => {
+        for (let item of iterableObj) {
+            if (predicateFn(item)) {
+                return item;
+            }
+        }
+
+        return undefined;
+    }
+);
+
 module.exports = {
     reduce,
     forEach,
     some,
-    every
+    every,
+    find
 };
