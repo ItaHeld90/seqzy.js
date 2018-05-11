@@ -29,11 +29,7 @@ const combineList = curry(
     (list, item) => [...list, item]
 );
 
-const listHead = 
-    list =>
-        list.length > 0
-            ? list[0]
-            : undefined
+const listHead = list => list[0];
 
 module.exports = {
     mapReducer,
