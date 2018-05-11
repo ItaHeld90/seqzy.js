@@ -97,6 +97,13 @@ const setWrapper = wrap(
     .value();
 
 console.log(setWrapper);
+
+const someTest = wrap(
+    [1, 2, 3, 4]
+)
+    .some(val => val % 2 === 0)
+
+console.log(someTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

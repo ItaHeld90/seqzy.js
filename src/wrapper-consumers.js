@@ -23,7 +23,20 @@ const forEach = curry(
     }
 );
 
+const some = curry(
+    (predicateFn, iterableObj) => {
+        for (let item of iterableObj) {
+            if (predicateFn(item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+)
+
 module.exports = {
     reduce,
-    forEach
+    forEach,
+    some
 };
