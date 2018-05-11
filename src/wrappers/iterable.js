@@ -45,6 +45,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
         const some = (predicateFn) => {
             const transformed = execTransformationsOnIterable();
             return consumers.some(predicateFn, transformed);
+        };
+
+        const every = (predicateFn) => {
+            const transformed = execTransformationsOnIterable();
+            return consumers.every(predicateFn, transformed);
         }
 
         // using take 1 to return a wrapper with only 1 value,
@@ -68,7 +73,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             forEach,
             head,
             take,
-            some
+            some,
+            every
         };
 
         return result;

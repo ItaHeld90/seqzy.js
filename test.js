@@ -104,6 +104,12 @@ const someTest = wrap(
     .some(val => val % 2 === 0)
 
 console.log(someTest);
+
+const everyTest =
+    pukkaGen
+        .every(val => val.includes('pukka'));
+
+console.log(everyTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
