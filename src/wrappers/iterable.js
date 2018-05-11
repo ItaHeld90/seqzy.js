@@ -40,10 +40,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             return consumers.forEach(fn, transformed);
         };
 
-        const head = pipe(
-            execTransformationsOnIterable,
-            consumers.head
-        );
+        const head = () => take(1).value();
 
         const value = execTransformationsOnIterable;
 
