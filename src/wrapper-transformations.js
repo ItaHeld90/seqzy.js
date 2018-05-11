@@ -1,4 +1,4 @@
-const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator } = require('./helper-utils');
+const { mapReducer, filterReducer, isIterable, makeIterator } = require('./helper-utils');
 const { curry, partialRight, pipe } = require('ramda/src');
 
 const map = curry(

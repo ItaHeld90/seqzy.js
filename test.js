@@ -75,6 +75,13 @@ const wrappedSentGen = wrap(
 const sentGen1000 = wrappedSentGen
     .take(1000);
 
+const sentGen10 = wrappedSentGen
+    .take(10);
+
+for (let sent of sentGen10.take(3)) {
+    console.log(sent);
+}
+
 const balonGen = sentGen1000
     .filter(sent => sent.includes('balon'));
 

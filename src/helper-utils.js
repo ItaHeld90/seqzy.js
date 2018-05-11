@@ -25,15 +25,6 @@ const makeIterator = (iterable) => {
     return iterable[Symbol.iterator]();
 }
 
-const extractIterator = (iterableObj) =>
-    () => {
-        const iterator = makeIterator(iterableObj);
-
-        return {
-            next: () => iterator.next()
-        };
-    };
-
 const combineList = curry(
     (list, item) => [...list, item]
 );
@@ -43,6 +34,5 @@ module.exports = {
     filterReducer,
     isIterable,
     makeIterator,
-    extractIterator,
     combineList
 };

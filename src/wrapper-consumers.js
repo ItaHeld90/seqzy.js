@@ -23,14 +23,7 @@ const forEach = curry(
     }
 );
 
-const head =
-    iterableObj =>
-        makeIterator(iterableObj)
-            .next()
-            .value;
-
 module.exports = {
     reduce,
-    forEach,
-    head,
+    forEach
 };

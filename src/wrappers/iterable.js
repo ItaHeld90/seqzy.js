@@ -1,4 +1,4 @@
-const { combineList } = require('../helper-utils');
+const { combineList, makeIterator } = require('../helper-utils');
 const { pipe } = require('ramda/src');
 const trans = require('../wrapper-transformations');
 const consumers = require('../wrapper-consumers');
@@ -45,6 +45,10 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
         const value = execTransformationsOnIterable;
 
         const result = {
+            [Symbol.iterator]: () => {
+                const transformed = execTransformationsOnIterable();
+                return makeIterator(transformed);
+            },
             value,
             map,
             filter,
