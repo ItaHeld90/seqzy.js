@@ -32,16 +32,16 @@ const take = curry(
         let counter = times;
         let result = [];
 
-        for (let item of nextIterableObj) {
+        for (let item of iterableObj) {
             if (counter <= 0) {
                 break;
             }
 
-            result = aggregate(result, item);
+            result.push(item);
             counter--;
         }
 
-        return wrapValue(result);
+        return result;
     }
 );
 

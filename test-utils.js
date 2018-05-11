@@ -8,9 +8,9 @@ function randInRange(min, max) {
 
 let sentencesGenerator = {
     [Symbol.iterator]: function* () {
-        const people = ['pukka', 'guygul', 'balon'];
-        const extra = ['very', 'big', 'not'];
-        const adjectives = ['sus', 'gimbun', 'melech'];
+        const people = ['pukka', 'guygul', 'balon', 'it'];
+        const extra = ['very', 'big', 'not', 'somewhat'];
+        const adjectives = ['sus', 'gimbun', 'melech', 'noob'];
 
         while(true) {
             const [person, ex, adj] =  [people, extra, adjectives].map(x => randomItem(x));

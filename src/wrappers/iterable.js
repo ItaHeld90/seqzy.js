@@ -1,7 +1,8 @@
-const { mapReducer, filterReducer, isIterable, makeIterator, extractIterator, combineList } = require('../helper-utils');
-const { curry, partialRight, pipe, identity } = require('ramda/src');
+const { combineList } = require('../helper-utils');
+const { pipe } = require('ramda/src');
 const trans = require('../wrapper-transformations');
 const consumers = require('../wrapper-consumers');
+const { execTransformations } = require('../iterable-utils');
 
 // wrapper
 const wrapIterable = (iterableObj, aggregate, createEmpty) => {
@@ -13,14 +14,9 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             rewrap
         );
 
-        // If any transformations were chained - execute them
-        // Else - return the iterable as is
-        const execTransformations =
-            transformations.length > 0
-                ? pipe(
-                    ...transformations
-                )
-                : identity;
+        const execTransformationsOnIterable =
+            () =>
+                execTransformations(transformations, iterableObj);
 
         const map =
             mapperFn =>
@@ -34,23 +30,22 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             (times) =>
                 rewrapWithNewTrans(trans.take(times));
 
-        const reduce = pipe(
-            execTransformations,
-            consumers.reduce
-        );
+        const reduce = (reducerFn, initialVal) => {
+            const transformed = execTransformationsOnIterable();
+            return consumers.reduce(reducerFn, initialVal, transformed);
+        };
 
-        const forEach = pipe(
-            execTransformations,
-            consumers.forEach
-        );
+        const forEach = (fn) => {
+            const transformed = execTransformationsOnIterable();
+            return consumers.forEach(fn, transformed);
+        };
 
-        const head = () => pipe(
-            execTransformations,
+        const head = pipe(
+            execTransformationsOnIterable,
             consumers.head
         );
 
-        // const value = execTransformations;
-        const value = () => execTransformations(iterableObj);
+        const value = execTransformationsOnIterable;
 
         const result = {
             value,

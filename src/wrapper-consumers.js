@@ -1,11 +1,12 @@
 const { curry } = require('ramda/src');
+const { makeIterator } = require('./helper-utils');
 
 const reduce = curry(
     (reducerFn, initialValue, iterableObj) => {
         let result = initialValue;
         let idx = 0;
 
-        for (let item of nextIterableObj) {
+        for (let item of iterableObj) {
             result = reducerFn(result, item, idx, iterableObj)
             idx++;
         }
