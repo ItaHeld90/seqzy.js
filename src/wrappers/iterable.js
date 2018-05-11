@@ -1,4 +1,4 @@
-const { combineList, makeIterator } = require('../helper-utils');
+const { combineList, makeIterator, listHead } = require('../helper-utils');
 const { pipe } = require('ramda/src');
 const trans = require('../wrapper-transformations');
 const consumers = require('../wrapper-consumers');
@@ -40,7 +40,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             return consumers.forEach(fn, transformed);
         };
 
-        const head = () => take(1).value();
+        const head = () => listHead(take(1).value());
 
         const value = execTransformationsOnIterable;
 

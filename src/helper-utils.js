@@ -29,10 +29,17 @@ const combineList = curry(
     (list, item) => [...list, item]
 );
 
+const listHead = 
+    list =>
+        list.length > 0
+            ? list[0]
+            : undefined
+
 module.exports = {
     mapReducer,
     filterReducer,
     isIterable,
     makeIterator,
-    combineList
+    combineList,
+    listHead
 };
