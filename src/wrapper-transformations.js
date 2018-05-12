@@ -45,8 +45,25 @@ const take = curry(
     }
 );
 
+const takeWhile = curry(
+    (predicateFn, iterableObj) => {
+        let result = [];
+
+        for (let item of iterableObj) {
+            if (!predicateFn(item)) {
+                break;
+            }
+
+            result.push(item);
+        }
+
+        return result;
+    }
+)
+
 module.exports = {
     map,
     filter,
-    take
+    take,
+    takeWhile
 }

@@ -37,6 +37,10 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             (times) =>
                 rewrapWithNewTrans(transUtils.take(times));
 
+        const takeWhile = 
+            predicateFn =>
+                rewrapWithNewTrans(transUtils.takeWhile(predicateFn));
+
         const reduce = pipe(
             consumerUtils.reduce,
             consume
@@ -88,6 +92,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             forEach,
             head,
             take,
+            takeWhile,
             some,
             every,
             find,

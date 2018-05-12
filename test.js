@@ -126,6 +126,14 @@ const findIndexTest = wrap(
 
 console.log('find index:', findIndexTest);
 
+const takeWhileTest = wrap(
+    [1, 2, 3, 4]
+)
+    .takeWhile(val => val < 4)
+    .value();
+
+console.log(takeWhileTest);
+
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
