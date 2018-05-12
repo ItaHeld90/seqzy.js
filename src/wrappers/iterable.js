@@ -25,21 +25,25 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             return consumeFn(transformed);
         }
 
-        const map =
-            mapperFn =>
-                rewrapWithNewTrans(transUtils.map(mapperFn));
+        const map = pipe(
+            transUtils.map,
+            rewrapWithNewTrans
+        );
 
-        const filter =
-            predicateFn =>
-                rewrapWithNewTrans(transUtils.filter(predicateFn));
+        const filter = pipe(
+            transUtils.filter,
+            rewrapWithNewTrans
+        );
 
-        const take =
-            (times) =>
-                rewrapWithNewTrans(transUtils.take(times));
+        const take = pipe(
+            transUtils.take,
+            rewrapWithNewTrans
+        );
 
-        const takeWhile = 
-            predicateFn =>
-                rewrapWithNewTrans(transUtils.takeWhile(predicateFn));
+        const takeWhile = pipe(
+            transUtils.takeWhile,
+            rewrapWithNewTrans
+        )
 
         const reduce = pipe(
             consumerUtils.reduce,
