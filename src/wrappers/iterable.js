@@ -1,7 +1,7 @@
 const { combineList, makeIterator, iterableHead } = require('../helper-utils');
 const { pipe } = require('ramda/src');
-const trans = require('../wrapper-transformations');
-const consumers = require('../wrapper-consumers');
+const transUtils = require('../wrapper-transformations');
+const consumerUtils = require('../wrapper-consumers');
 const { execTransformations } = require('../iterable-utils');
 
 // wrapper
@@ -18,48 +18,48 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             () =>
                 execTransformations(transformations, iterableObj);
 
-        const construct = consumers.reduce(aggregate, createEmpty());
+        const construct = consumerUtils.reduce(aggregate, createEmpty());
 
         const map =
             mapperFn =>
-                rewrapWithNewTrans(trans.map(mapperFn));
+                rewrapWithNewTrans(transUtils.map(mapperFn));
 
         const filter =
             predicateFn =>
-                rewrapWithNewTrans(trans.filter(predicateFn));
+                rewrapWithNewTrans(transUtils.filter(predicateFn));
 
         const take =
             (times) =>
-                rewrapWithNewTrans(trans.take(times));
+                rewrapWithNewTrans(transUtils.take(times));
 
         const reduce = (reducerFn, initialVal) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.reduce(reducerFn, initialVal, transformed);
+            return consumerUtils.reduce(reducerFn, initialVal, transformed);
         };
 
         const forEach = (fn) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.forEach(fn, transformed);
+            return consumerUtils.forEach(fn, transformed);
         };
 
         const some = (predicateFn) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.some(predicateFn, transformed);
+            return consumerUtils.some(predicateFn, transformed);
         };
 
         const every = (predicateFn) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.every(predicateFn, transformed);
+            return consumerUtils.every(predicateFn, transformed);
         };
 
         const find = (predicateFn) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.find(predicateFn, transformed);
+            return consumerUtils.find(predicateFn, transformed);
         };
 
         const findIndex = (predicateFn) => {
             const transformed = execTransformationsOnIterable();
-            return consumers.findIndex(predicateFn, transformed);
+            return consumerUtils.findIndex(predicateFn, transformed);
         }
 
         // using take 1 to return a wrapper with only 1 value,
