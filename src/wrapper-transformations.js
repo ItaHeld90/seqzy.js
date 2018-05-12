@@ -1,5 +1,4 @@
-const { mapReducer, filterReducer, isIterable, makeIterator } = require('./helper-utils');
-const { curry, partialRight, pipe } = require('ramda/src');
+const { curry, partialRight } = require('ramda/src');
 
 const map = curry(
     (mapperFn, iterableObj) => {
@@ -76,12 +75,36 @@ const drop = curry(
 
         return result;
     }
-)
+);
+
+const dropWhile = curry(
+    (predicateFn, iterableObj) => {
+        let result = [];
+        let shouldDrop = true;
+
+        for (let item of iterableObj) {
+            console.log('debug:', predicateFn(item));
+
+            // If passed the drop phase - add the item
+            if (!shouldDrop) {
+                result.push(item);
+            }
+            // If the predicate returns false - add the item and flag to start taking items
+            else if (!predicateFn(item)) {
+                shouldDrop = false;
+                result.push(item);
+            }
+        }
+
+        return result;
+    }
+);
 
 module.exports = {
     map,
     filter,
     take,
     takeWhile,
-    drop
+    drop,
+    dropWhile
 }

@@ -142,6 +142,14 @@ const dropTest = wrap(
 
 console.log('drop:', dropTest);
 
+const dropWhileTest = wrap(
+    [1, 2, 3, 4]
+)
+    .dropWhile(val => val % 2 !== 0)
+    .value();
+
+console.log('drop while test', dropWhileTest);
+
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

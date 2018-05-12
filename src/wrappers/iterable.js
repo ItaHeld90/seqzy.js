@@ -50,6 +50,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             rewrapWithNewTrans
         );
 
+        const dropWhile = pipe(
+            transUtils.dropWhile,
+            rewrapWithNewTrans
+        );
+
         const reduce = pipe(
             consumerUtils.reduce,
             consume
@@ -100,6 +105,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             take,
             takeWhile,
             drop,
+            dropWhile,
             reduce,
             forEach,
             head,
