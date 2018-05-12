@@ -119,6 +119,13 @@ const findTest = wrap(
 
 console.log('find:', findTest);
 
+const findIndexTest = wrap(
+    [1, 2, 3, 4]
+)
+    .findIndex(val => val > 2);
+
+console.log('find index:', findIndexTest);
+
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

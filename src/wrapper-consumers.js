@@ -59,10 +59,27 @@ const find = curry(
     }
 );
 
+const findIndex = curry(
+    (predicateFn, iterableObj) => {
+        let foundIdx = 0;
+
+        for (let item of iterableObj) {
+            if (predicateFn(item)) {
+                return foundIdx;
+            }
+
+            foundIdx++;
+        }
+
+        return -1;
+    }
+)
+
 module.exports = {
     reduce,
     forEach,
     some,
     every,
-    find
+    find,
+    findIndex
 };

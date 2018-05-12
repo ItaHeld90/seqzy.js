@@ -57,6 +57,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             return consumers.find(predicateFn, transformed);
         };
 
+        const findIndex = (predicateFn) => {
+            const transformed = execTransformationsOnIterable();
+            return consumers.findIndex(predicateFn, transformed);
+        }
+
         // using take 1 to return a wrapper with only 1 value,
         // then unwrapping the value
         const head = () => iterableHead(take(1).value());
@@ -80,7 +85,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             take,
             some,
             every,
-            find
+            find,
+            findIndex
         };
 
         return result;
