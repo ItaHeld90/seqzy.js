@@ -132,7 +132,15 @@ const takeWhileTest = wrap(
     .takeWhile(val => val < 4)
     .value();
 
-console.log(takeWhileTest);
+console.log('take while:', takeWhileTest);
+
+const dropTest = wrap(
+    [1, 2, 3, 4]
+)
+    .drop(2)
+    .value();
+
+console.log('drop:', dropTest);
 
 // const notIterable = wrap({}, () => ({}), {});
 

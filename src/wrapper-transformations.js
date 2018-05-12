@@ -61,9 +61,27 @@ const takeWhile = curry(
     }
 )
 
+const drop = curry(
+    (times, iterableObj) => {
+        let counter = 0;
+        let result = [];
+
+        for (let item of iterableObj) {
+            if (counter >= times) {
+                result.push(item);
+            }
+
+            counter++;
+        }
+
+        return result;
+    }
+)
+
 module.exports = {
     map,
     filter,
     take,
-    takeWhile
+    takeWhile,
+    drop
 }
