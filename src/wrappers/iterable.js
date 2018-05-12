@@ -20,6 +20,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
 
         const construct = consumerUtils.reduce(aggregate, createEmpty());
 
+        const consume = (consumeFn) => {
+            const transformed = execTransformationsOnIterable();
+            return consumeFn(transformed);
+        }
+
         const map =
             mapperFn =>
                 rewrapWithNewTrans(transUtils.map(mapperFn));
@@ -32,35 +37,35 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             (times) =>
                 rewrapWithNewTrans(transUtils.take(times));
 
-        const reduce = (reducerFn, initialVal) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.reduce(reducerFn, initialVal, transformed);
-        };
+        const reduce = pipe(
+            consumerUtils.reduce,
+            consume
+        );
 
-        const forEach = (fn) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.forEach(fn, transformed);
-        };
+        const forEach = pipe(
+            consumerUtils.forEach,
+            consume
+        );
 
-        const some = (predicateFn) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.some(predicateFn, transformed);
-        };
+        const some = pipe(
+            consumerUtils.some,
+            consume
+        );
 
-        const every = (predicateFn) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.every(predicateFn, transformed);
-        };
+        const every = pipe(
+            consumerUtils.every,
+            consume
+        );
 
-        const find = (predicateFn) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.find(predicateFn, transformed);
-        };
+        const find = pipe(
+            consumerUtils.find,
+            consume
+        );
 
-        const findIndex = (predicateFn) => {
-            const transformed = execTransformationsOnIterable();
-            return consumerUtils.findIndex(predicateFn, transformed);
-        }
+        const findIndex = pipe(
+            consumerUtils.findIndex,
+            consume
+        );
 
         // using take 1 to return a wrapper with only 1 value,
         // then unwrapping the value
