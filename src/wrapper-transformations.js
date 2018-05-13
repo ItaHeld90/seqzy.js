@@ -89,8 +89,6 @@ const dropWhile = curry(
         let shouldDrop = true;
 
         for (let item of iterableObj) {
-            console.log('debug:', predicateFn(item));
-
             // If passed the drop phase - add the item
             if (!shouldDrop) {
                 result.push(item);
@@ -106,6 +104,19 @@ const dropWhile = curry(
     }
 );
 
+const compact =
+    iterableObj => {
+        let result = [];
+
+        for (let item of iterableObj) {
+            if (item) {
+                result.push(item);
+            }
+        }
+
+        return result;
+    };
+
 module.exports = {
     map,
     filter,
@@ -113,5 +124,6 @@ module.exports = {
     take,
     takeWhile,
     drop,
-    dropWhile
+    dropWhile,
+    compact
 }

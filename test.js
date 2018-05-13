@@ -167,6 +167,13 @@ const rejectTest = wrap(
 
 console.log(rejectTest);
 
+const compactTest = wrap(
+    [1, '', 2 * 'some', false, true, null, undefined]
+)
+    .compact()
+    .value();
+
+console.log('compact:', compactTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
