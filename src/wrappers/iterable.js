@@ -85,6 +85,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             consume
         );
 
+        const nth = pipe(
+            consumerUtils.nth,
+            consume
+        );
+
         // using take 1 to return a wrapper with only 1 value,
         // then unwrapping the value
         const head = () => iterableHead(take(1).value());
@@ -112,7 +117,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             some,
             every,
             find,
-            findIndex
+            findIndex,
+            nth
         };
 
         return result;

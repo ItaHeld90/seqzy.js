@@ -73,7 +73,23 @@ const findIndex = curry(
 
         return -1;
     }
-)
+);
+
+const nth = curry(
+    (offset, iterableObj) => {
+        let idx = 0;
+
+        for (let item of iterableObj) {
+            if (idx === offset) {
+                return item;
+            }
+
+            idx++;
+        }
+
+        return undefined;
+    }
+);
 
 module.exports = {
     reduce,
@@ -81,5 +97,6 @@ module.exports = {
     some,
     every,
     find,
-    findIndex
+    findIndex,
+    nth
 };
