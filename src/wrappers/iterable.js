@@ -35,6 +35,11 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             rewrapWithNewTrans
         );
 
+        const reject = pipe(
+            transUtils.reject,
+            rewrapWithNewTrans
+        );
+
         const take = pipe(
             transUtils.take,
             rewrapWithNewTrans
@@ -107,6 +112,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             value,
             map,
             filter,
+            reject,
             take,
             takeWhile,
             drop,

@@ -159,6 +159,14 @@ console.log('nth - middle:', nthTest.nth(2));
 console.log('nth - end:', nthTest.nth(3));
 console.log('nth - out of range:', nthTest.nth(4));
 
+const rejectTest = wrap(
+    [1, 2, 3, 4]
+)
+    .reject(val => val % 2 === 0)
+    .value();
+
+console.log(rejectTest);
+
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

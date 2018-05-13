@@ -1,4 +1,5 @@
 const { curry, partialRight } = require('ramda/src');
+const { not } = require('./helper-utils');
 
 const map = curry(
     (mapperFn, iterableObj) => {
@@ -24,6 +25,11 @@ const filter = curry(
 
         return result;
     }
+);
+
+const reject = curry(
+    (predicateFn, iterableObj) =>
+        filter(not(predicateFn), iterableObj)
 );
 
 const take = curry(
@@ -103,6 +109,7 @@ const dropWhile = curry(
 module.exports = {
     map,
     filter,
+    reject,
     take,
     takeWhile,
     drop,

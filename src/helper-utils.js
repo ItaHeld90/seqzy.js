@@ -34,11 +34,17 @@ const iterableHead = iterableObj => {
     return iterator.next().value;
 };
 
+const not = 
+    predicateFn =>
+        (...args) =>
+            !predicateFn(...args);
+
 module.exports = {
     mapReducer,
     filterReducer,
     isIterable,
     makeIterator,
     combineList,
-    iterableHead
+    iterableHead,
+    not
 };
