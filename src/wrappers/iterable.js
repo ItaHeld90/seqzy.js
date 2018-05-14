@@ -11,6 +11,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
     const construct = consumerUtils.reduce(aggregate, createEmpty());
 
     return function rewrap(transformations) {
+        const addTransformation = combineList(transformations);
+
         return function fuse(fusion) {
             const consume = (consumeFn) => {
                 const allTransformations = addFusionToTransformations();
@@ -18,7 +20,6 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                 return consumeFn(transformed);
             }
 
-            const addTransformation = combineList(transformations);
             const addFusionToTransformations =
                 () =>
                     fusion.length > 0
