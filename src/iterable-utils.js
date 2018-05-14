@@ -1,5 +1,6 @@
-const { pipe } = require('ramda/src');
-const { identity } = require('./helper-utils');
+const { pipe, compose } = require('ramda/src');
+const { identity, combineList } = require('./helper-utils');
+const consumerUtils = require('./wrapper-consumers');
 
 // If any transformations were chained - execute them
 // Else - return the iterable as is
@@ -11,6 +12,17 @@ const execTransformations = (transformations, iterableObj) =>
             (iterableObj)
         : identity(iterableObj);
 
+const getFusionReducer =
+    fusion => {
+        const preparedFusion = compose(
+            ...fusion
+        )
+            (combineList);
+
+        return consumerUtils.reduce(preparedFusion, []);
+    }
+
 module.exports = {
-    execTransformations
+    execTransformations,
+    getFusionReducer
 };
