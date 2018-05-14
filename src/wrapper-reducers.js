@@ -1,4 +1,5 @@
-const { not, identity } = './helper-utils';
+const { not, identity } = require('./helper-utils');
+const { curry } = require('ramda/src');
 
 const mapReducer = curry(
     (mapperFn, aggregator) =>
@@ -23,5 +24,7 @@ const compactReducer = filterReducer(identity);
 
 module.exports = {
     mapReducer,
-    filterReducer
+    filterReducer,
+    rejectReducer,
+    compactReducer
 };

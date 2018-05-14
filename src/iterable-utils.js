@@ -1,4 +1,5 @@
-const { pipe, identity } = require('ramda/src');
+const { pipe } = require('ramda/src');
+const { identity } = require('./helper-utils');
 
 // If any transformations were chained - execute them
 // Else - return the iterable as is

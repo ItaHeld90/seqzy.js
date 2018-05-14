@@ -12,7 +12,12 @@ const makeIterator = (iterable) => {
 }
 
 const combineList = curry(
-    (list, item) => [...list, item]
+    (list, item) =>
+        [...list, item]
+);
+
+const valuesToPair = curry(
+    (value1, value2) => [value1, value2]
 );
 
 const iterableHead = iterableObj => {
@@ -33,6 +38,8 @@ module.exports = {
     isIterable,
     makeIterator,
     combineList,
+    valuesToPair,
     iterableHead,
-    not
+    not,
+    identity
 };
