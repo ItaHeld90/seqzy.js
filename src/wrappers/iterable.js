@@ -13,7 +13,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
     return function rewrap(transformations) {
         const addTransformation = combineList(transformations);
 
-        return function fuse(fusion) {
+        return function fuse(fusionList) {
             const consume = (consumeFn) => {
                 const allTransformations = addFusionToTransformations();
                 const transformed = execTransformations(allTransformations, iterableObj);
@@ -22,8 +22,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
 
             const addFusionToTransformations =
                 () =>
-                    fusion.length > 0
-                        ? addTransformation(getFusionReducer(fusion))
+                    fusionList.length > 0
+                        ? addTransformation(getFusionReducer(fusionList))
                         : transformations;
 
             const rewrapWithNewTrans =
@@ -34,7 +34,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                 };
 
             const fuseIn = pipe(
-                combineList(fusion),
+                combineList(fusionList),
                 fuse
             );
 
