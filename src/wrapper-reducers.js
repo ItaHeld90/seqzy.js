@@ -38,17 +38,35 @@ const takeReducer = curry(
             if (!shouldProceed) {
                 token.done();
             }
-            
+
             counter--;
             return nextResult;
         }
     }
 )
 
+const takeWhileReducer = curry(
+    (predicateFn, aggregator) =>
+        (result, item, idx, token) => {
+            const shouldProceed = predicateFn(item);
+
+            const nextResult = shouldProceed
+                ? aggregator(result, item, idx, token)
+                : result;
+
+            if (!shouldProceed) {
+                token.done();
+            }
+
+            return nextResult;
+        }
+);
+
 module.exports = {
     mapReducer,
     filterReducer,
     rejectReducer,
     compactReducer,
-    takeReducer
+    takeReducer,
+    takeWhileReducer
 };

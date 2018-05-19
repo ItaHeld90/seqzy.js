@@ -65,8 +65,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             );
 
             const takeWhile = pipe(
-                transUtils.takeWhile,
-                rewrapWithNewTrans
+                reducerUtils.takeWhileReducer,
+                fuseIn
             );
 
             const drop = pipe(
