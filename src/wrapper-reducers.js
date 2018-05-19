@@ -25,20 +25,26 @@ const rejectReducer = curry(
 const compactReducer = filterReducer(identity);
 
 const takeReducer = curry(
-    (times, aggregator) =>
-        (result, item, idx, token) => {
-            const shouldProceed = idx < times;
+    (times, aggregator) => {
+        let counter = times;
+
+        return (result, item, idx, token) => {
+            const shouldProceed = counter > 0;
 
             const nextResult = shouldProceed
                 ? aggregator(result, item, idx, token)
                 : result;
 
-            if (!shouldProceed) {
+            if (shouldProceed) {
+                counter--;
+            }
+            else {
                 token.done();
             }
 
             return nextResult;
         }
+    }
 )
 
 const takeWhileReducer = curry(
@@ -59,12 +65,23 @@ const takeWhileReducer = curry(
 );
 
 const dropReducer = curry(
-    (times, aggregator) =>
-        (result, item, idx, token) => {
-            return (idx >= times)
+    (times, aggregator) => {
+        let counter = times;
+
+        return (result, item, idx, token) => {
+            const shouldTake = counter <= 0;
+
+            const nextResult = shouldTake
                 ? aggregator(result, item, idx, token)
-                : result
+                : result;
+
+            if (!shouldTake) {
+                counter--;
+            }
+
+            return nextResult;
         }
+    }
 );
 
 const dropWhileReducer = curry(

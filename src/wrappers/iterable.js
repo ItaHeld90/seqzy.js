@@ -53,6 +53,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                         consume
                     )
 
+            // Fusionable functions
             const map = fusionable(reducerUtils.mapReducer);
 
             const filter = fusionable(reducerUtils.filterReducer);
@@ -69,6 +70,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
 
             const dropWhile = fusionable(reducerUtils.dropWhileReducer);
 
+            // Consumer functions
             const reduce = consumer(consumerUtils.reduce);
 
             const forEach = consumer(consumerUtils.forEach);
@@ -93,7 +95,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                     return construct(resultIterable);
                 };
 
-            const result = {
+            const wrapper = {
                 [Symbol.iterator]: () => {
                     const transformed = consume(identity);
                     return makeIterator(transformed);
@@ -117,7 +119,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                 nth
             };
 
-            return result;
+            return wrapper;
         }
             ([]);
     }
