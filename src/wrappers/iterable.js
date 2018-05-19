@@ -19,7 +19,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                 const allTransformations = addFusionToTransformations();
                 const transformed = execTransformations(allTransformations, iterableObj);
                 return consumeFn(transformed);
-            }
+            };
 
             const addFusionToTransformations =
                 () =>
@@ -39,80 +39,49 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
                 fuse
             );
 
-            const map = pipe(
-                reducerUtils.mapReducer,
-                fuseIn
-            );
+            const fusionable = 
+                reducerFn =>
+                    pipe(
+                        reducerFn,
+                        fuseIn
+                    );
+            
+            const consumer =
+                consumerFn =>
+                    pipe(
+                        consumerFn,
+                        consume
+                    )
 
-            const filter = pipe(
-                reducerUtils.filterReducer,
-                fuseIn
-            );
+            const map = fusionable(reducerUtils.mapReducer);
 
-            const reject = pipe(
-                reducerUtils.rejectReducer,
-                fuseIn
-            );
+            const filter = fusionable(reducerUtils.filterReducer);
 
-            const compact = pipe(
-                () => reducerUtils.compactReducer,
-                fuseIn
-            );
+            const reject = fusionable(reducerUtils.rejectReducer);
 
-            const take = pipe(
-                reducerUtils.takeReducer,
-                fuseIn
-            );
+            const compact = fusionable(() => reducerUtils.compactReducer);
 
-            const takeWhile = pipe(
-                reducerUtils.takeWhileReducer,
-                fuseIn
-            );
+            const take = fusionable(reducerUtils.takeReducer);
 
-            const drop = pipe(
-                reducerUtils.dropReducer,
-                fuseIn
-            );
+            const takeWhile = fusionable(reducerUtils.takeWhileReducer);
 
-            const dropWhile = pipe(
-                reducerUtils.dropWhileReducer,
-                fuseIn
-            );
+            const drop = fusionable(reducerUtils.dropReducer);
 
-            const reduce = pipe(
-                consumerUtils.reduce,
-                consume
-            );
+            const dropWhile = fusionable(reducerUtils.dropWhileReducer);
 
-            const forEach = pipe(
-                consumerUtils.forEach,
-                consume
-            );
+            const reduce = consumer(consumerUtils.reduce);
 
-            const some = pipe(
-                consumerUtils.some,
-                consume
-            );
+            const forEach = consumer(consumerUtils.forEach);
 
-            const every = pipe(
-                consumerUtils.every,
-                consume
-            );
+            const some = consumer(consumerUtils.some);
 
-            const find = pipe(
-                consumerUtils.find,
-                consume
-            );
+            const every = consumer(consumerUtils.every);
 
-            const findIndex = pipe(
-                consumerUtils.findIndex,
-                consume
-            );
+            const find = consumer(consumerUtils.find);
 
-            const nth = pipe(
-                consumerUtils.nth,
-                consume
-            );
+            const findIndex = consumer(consumerUtils.findIndex);
+
+            const nth = consumer(consumerUtils.nth);
 
             // using take 1 to return a wrapper with only 1 value,
             // then unwrapping the value
