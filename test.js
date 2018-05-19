@@ -148,7 +148,7 @@ const dropWhileTest = wrap(
     .dropWhile(val => val % 2 !== 0)
     .value();
 
-console.log('drop while test', dropWhileTest);
+console.log('drop while test:', dropWhileTest);
 
 const nthTest = wrap(
     [1, 2, 3, 4]

@@ -62,10 +62,24 @@ const dropReducer = curry(
     (times, aggregator) =>
         (result, item, idx, token) => {
             return (idx >= times)
-            ? aggregator(result, item, idx, token)
-            : result
+                ? aggregator(result, item, idx, token)
+                : result
         }
-)
+);
+
+const dropWhileReducer = curry(
+    (predicateFn, aggregator) => {
+        let shouldTake = false;
+
+        return (result, item, idx, token) => {
+            shouldTake |= !predicateFn(item)
+
+            return shouldTake
+                ? aggregator(result, item, idx, token)
+                : result;
+        }
+    }
+);
 
 module.exports = {
     mapReducer,
@@ -74,5 +88,6 @@ module.exports = {
     compactReducer,
     takeReducer,
     takeWhileReducer,
-    dropReducer
+    dropReducer,
+    dropWhileReducer
 };

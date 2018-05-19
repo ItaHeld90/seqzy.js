@@ -86,16 +86,12 @@ const drop = curry(
 const dropWhile = curry(
     (predicateFn, iterableObj) => {
         let result = [];
-        let shouldDrop = true;
+        let shouldTake = false;
 
         for (let item of iterableObj) {
-            // If passed the drop phase - add the item
-            if (!shouldDrop) {
-                result.push(item);
-            }
-            // If the predicate returns false - add the item and flag to start taking items
-            else if (!predicateFn(item)) {
-                shouldDrop = false;
+            shouldTake |= !predicateFn(item);
+
+            if (shouldTake) {
                 result.push(item);
             }
         }
