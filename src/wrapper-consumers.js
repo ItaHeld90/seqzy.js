@@ -7,7 +7,7 @@ const reduce = curry(
         let idx = 0;
 
         for (let item of iterableObj) {
-            result = reducerFn(result, item, idx, iterableObj)
+            result = reducerFn(result, item, idx)
             idx++;
         }
 

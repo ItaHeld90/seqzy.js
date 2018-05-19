@@ -3,16 +3,18 @@ const { curry } = require('ramda/src');
 
 const mapReducer = curry(
     (mapperFn, aggregator) =>
-        (result, item) =>
-            aggregator(result, mapperFn(item))
+        (result, item, idx, token) => {
+            return aggregator(result, mapperFn(item), idx, token);
+        }
 );
 
 const filterReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item) =>
-            predicateFn(item)
-                ? aggregator(result, item)
+        (result, item, idx, token) => {
+            return predicateFn(item)
+                ? aggregator(result, item, idx, token)
                 : result
+        }
 );
 
 const rejectReducer = curry(
@@ -22,9 +24,31 @@ const rejectReducer = curry(
 
 const compactReducer = filterReducer(identity);
 
+const takeReducer = curry(
+    (times, aggregator) => {
+        let counter = times;
+
+        return (result, item, idx, token) => {
+            const shouldProceed = counter > 0;
+
+            const nextResult = shouldProceed
+                ? aggregator(result, item, idx, token)
+                : result;
+
+            if (!shouldProceed) {
+                token.done();
+            }
+            
+            counter--;
+            return nextResult;
+        }
+    }
+)
+
 module.exports = {
     mapReducer,
     filterReducer,
     rejectReducer,
-    compactReducer
+    compactReducer,
+    takeReducer
 };

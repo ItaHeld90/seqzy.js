@@ -174,6 +174,16 @@ const compactTest = wrap(
     .value();
 
 console.log('compact:', compactTest);
+
+const shortcutFusionTest = wrap(
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+)
+    .filter(val => val % 2 === 0)
+    .map(val => val * 10)
+    .take(2)
+    .value()
+
+console.log('shortcut fusion:', shortcutFusionTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

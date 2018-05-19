@@ -12,17 +12,6 @@ const execTransformations = (transformations, iterableObj) =>
             (iterableObj)
         : identity(iterableObj);
 
-const getFusionReducer =
-    fusion => {
-        const preparedFusion = compose(
-            ...fusion
-        )
-            (combineList);
-
-        return consumerUtils.reduce(preparedFusion, []);
-    }
-
 module.exports = {
-    execTransformations,
-    getFusionReducer
+    execTransformations
 };

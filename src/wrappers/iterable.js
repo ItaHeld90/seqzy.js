@@ -1,6 +1,7 @@
 const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
 const { pipe, compose, concat } = require('ramda/src');
-const { execTransformations, getFusionReducer } = require('../iterable-utils');
+const { execTransformations } = require('../iterable-utils');
+const { getFusionReducer } = require('../transduce-utils');
 
 const transUtils = require('../wrapper-transformations');
 const consumerUtils = require('../wrapper-consumers');
@@ -59,8 +60,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             );
 
             const take = pipe(
-                transUtils.take,
-                rewrapWithNewTrans
+                reducerUtils.takeReducer,
+                fuseIn
             );
 
             const takeWhile = pipe(
