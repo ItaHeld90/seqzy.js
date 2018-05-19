@@ -25,11 +25,9 @@ const rejectReducer = curry(
 const compactReducer = filterReducer(identity);
 
 const takeReducer = curry(
-    (times, aggregator) => {
-        let counter = times;
-
-        return (result, item, idx, token) => {
-            const shouldProceed = counter > 0;
+    (times, aggregator) =>
+        (result, item, idx, token) => {
+            const shouldProceed = idx < times;
 
             const nextResult = shouldProceed
                 ? aggregator(result, item, idx, token)
@@ -39,10 +37,8 @@ const takeReducer = curry(
                 token.done();
             }
 
-            counter--;
             return nextResult;
         }
-    }
 )
 
 const takeWhileReducer = curry(
@@ -62,11 +58,21 @@ const takeWhileReducer = curry(
         }
 );
 
+const dropReducer = curry(
+    (times, aggregator) =>
+        (result, item, idx, token) => {
+            return (idx >= times)
+            ? aggregator(result, item, idx, token)
+            : result
+        }
+)
+
 module.exports = {
     mapReducer,
     filterReducer,
     rejectReducer,
     compactReducer,
     takeReducer,
-    takeWhileReducer
+    takeWhileReducer,
+    dropReducer
 };

@@ -70,8 +70,8 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             );
 
             const drop = pipe(
-                transUtils.drop,
-                rewrapWithNewTrans
+                reducerUtils.dropReducer,
+                fuseIn
             );
 
             const dropWhile = pipe(
