@@ -8,9 +8,7 @@ const consumerUtils = require('../wrapper-consumers');
 const reducerUtils = require('../wrapper-reducers');
 
 // wrapper
-const wrapIterable = (iterableObj, aggregate, createEmpty) => {
-    const construct = consumerUtils.reduce(aggregate, createEmpty());
-
+const wrapIterable = (iterableObj, constructFn) => {
     return function rewrap(transformations) {
         const addTransformation = combineList(transformations);
 
@@ -92,7 +90,7 @@ const wrapIterable = (iterableObj, aggregate, createEmpty) => {
             const value =
                 () => {
                     const resultIterable = consume(identity);
-                    return construct(resultIterable);
+                    return constructFn(resultIterable);
                 };
 
             const wrapper = {
