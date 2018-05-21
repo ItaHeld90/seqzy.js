@@ -5,7 +5,7 @@ const wrapString = require('./src/wrappers/string');
 const wrapList = require('./src/wrappers/list');
 const { isIterable } = require('./src/helper-utils');
 
-const wrap = (iterableObj, aggregate, createEmpty) => {
+const wrap = (iterableObj, construct) => {
     if (!isIterable(iterableObj)) {
         throw new Error('The object received is not iterable');
     }
@@ -22,7 +22,7 @@ const wrap = (iterableObj, aggregate, createEmpty) => {
         return wrapString(iterableObj);
     }
 
-    return wrapList(iterableObj);
+    return wrapList(iterableObj, construct);
 }
 
 module.exports = {

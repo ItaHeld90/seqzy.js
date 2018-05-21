@@ -184,6 +184,33 @@ const shortcutFusionTest = wrap(
     .value()
 
 console.log('shortcut fusion:', shortcutFusionTest);
+
+const getSentencesByName =
+    sentences =>
+        sentences
+            .reduce(
+                (result, sentence) => {
+                    const [name] = sentence.split(' ');
+
+                    let sentencesByName = result[name]
+                        ? [...result[name], sentence]
+                        : [sentence]
+
+                    return Object.assign(result, { [name]: sentencesByName });
+                }
+                , {}
+            );
+
+
+const constructTest = wrap(
+    sentGen,
+    getSentencesByName
+)
+    .take(10)
+    .map(val => val.toUpperCase())
+    .value();
+
+console.log(constructTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
