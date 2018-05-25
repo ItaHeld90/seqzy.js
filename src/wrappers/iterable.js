@@ -107,9 +107,7 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const nth = consumer2(consumerReducerUtils.nthReducer, last, null);
 
-            // using take 1 to return a wrapper with only 1 value,
-            // then unwrapping the value
-            const head = () => iterableHead(take(1).value());
+            const head = consumer2(() => consumerReducerUtils.headReducer, last, null);
 
             const value =
                 () => {

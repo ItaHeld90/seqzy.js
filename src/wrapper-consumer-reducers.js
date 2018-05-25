@@ -87,10 +87,18 @@ const nthReducer = curry(
     }
 );
 
+const headReducer =
+    aggregator =>
+        (result, item, token) => {
+            token.done();
+            return item;
+        };
+
 module.exports = {
     someReducer,
     everyReducer,
     findReducer,
     findIndexReducer,
     nthReducer,
+    headReducer,
 };
