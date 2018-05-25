@@ -1,4 +1,4 @@
-const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
+const { combineList, makeIterator, iterableHead, valuesToPair, identity, last } = require('../helper-utils');
 const { pipe, compose, concat, or, and } = require('ramda/src');
 const { execTransformations } = require('../iterable-utils');
 const { getFusionReducer } = require('../transduce-utils');
@@ -97,13 +97,13 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const forEach = consumer(consumerUtils.forEach);
 
-            const some = consumer2(consumerReducerUtils.someReducer, or, false);
+            const some = consumer2(consumerReducerUtils.someReducer, last, false);
 
-            const every = consumer2(consumerReducerUtils.everyReducer, and, true);
+            const every = consumer2(consumerReducerUtils.everyReducer, last, true);
 
-            const find = consumer2(consumerReducerUtils.findReducer, or, null);
+            const find = consumer2(consumerReducerUtils.findReducer, last, null);
 
-            const findIndex = consumer(consumerUtils.findIndex);
+            const findIndex = consumer2(consumerReducerUtils.findIndexReducer, last, -1);
 
             const nth = consumer(consumerUtils.nth);
 

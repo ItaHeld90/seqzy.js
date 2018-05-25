@@ -41,10 +41,33 @@ const findReducer = curry(
 
             return aggregator(result, newResult);
         }
-)
+);
+
+const findIndexReducer = curry(
+    (predicateFn, aggregator) => {
+        let currIdx = 0;
+
+        return (result, item, token) => {
+            const isPass = predicateFn(item);
+
+            if (isPass) {
+                token.done();
+            }
+
+            const newResult = isPass
+                ? currIdx
+                : -1;
+
+            currIdx++;
+
+            return newResult;
+        }
+    }
+);
 
 module.exports = {
     someReducer,
     everyReducer,
-    findReducer
+    findReducer,
+    findIndexReducer
 };
