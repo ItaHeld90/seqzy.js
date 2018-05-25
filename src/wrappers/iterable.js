@@ -12,6 +12,7 @@ const reducerUtils = require('../wrapper-reducers');
 const wrapIterable = (iterableObj, constructFn) => {
     return function rewrap(transformations) {
         const addTransformation = combineList(transformations);
+        const defaultFusionReducerCalculator = getFusionReducer(combineList, []);
 
         return function fuse(fusionList) {
             const consume = (consumeFn) => {
@@ -23,7 +24,7 @@ const wrapIterable = (iterableObj, constructFn) => {
             const addFusionToTransformations =
                 () =>
                     fusionList.length > 0
-                        ? addTransformation(getFusionReducer(combineList, fusionList))
+                        ? addTransformation(defaultFusionReducerCalculator(fusionList))
                         : transformations;
 
             const rewrapWithNewTrans =
@@ -53,16 +54,20 @@ const wrapIterable = (iterableObj, constructFn) => {
                     )
 
             const consumer2 =
-                (consumeFn, aggregator) =>
+                (consumeFn, aggregator, initialValue) =>
                     (...args) => {
                         // create consumer reducer
                         const reducer = consumeFn(...args);
                         // add to fusion
                         const newFusion = combineList(fusionList, reducer);
+                        // get fusion reducer calculator
+                        const calculateFusionReducer =
+                            getFusionReducer(aggregator, initialValue);
+
                         // add fusion to transformations
                         const allTransformations =
                             pipe(
-                                getFusionReducer(aggregator),
+                                calculateFusionReducer,
                                 addTransformation
                             )
                                 (newFusion);
@@ -92,9 +97,9 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const forEach = consumer(consumerUtils.forEach);
 
-            const some = consumer2(consumerReducerUtils.someReducer, or);
+            const some = consumer2(consumerReducerUtils.someReducer, or, false);
 
-            const every = consumer2(consumerReducerUtils.everyReducer, and);
+            const every = consumer2(consumerReducerUtils.everyReducer, and, true);
 
             const find = consumer(consumerUtils.find);
 

@@ -9,7 +9,7 @@ const someReducer = curry(
                 token.done();
             }
 
-            return isPass;
+            return aggregator(result, isPass);
         }
 );
 
@@ -22,7 +22,7 @@ const everyReducer = curry(
                 token.done();
             }
 
-            return isPass;
+            return aggregator(result, isPass);
         }
 );
 

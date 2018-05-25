@@ -21,15 +21,16 @@ const breakableReduce = curry(
     }
 );
 
-const getFusionReducer = curry(
-    (aggregator, fusion) => {
-        const preparedFusion = compose(
-            ...fusion
-        )
-            (aggregator);
+const getFusionReducer = (
+    (aggregator, initialValue) =>
+        fusion => {
+            const preparedFusion = compose(
+                ...fusion
+            )
+                (aggregator);
 
-        return breakableReduce(preparedFusion, []);
-    }
+            return breakableReduce(preparedFusion, initialValue);
+        }
 );
 
 module.exports = {
