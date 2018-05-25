@@ -105,7 +105,7 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const findIndex = consumer2(consumerReducerUtils.findIndexReducer, last, -1);
 
-            const nth = consumer(consumerUtils.nth);
+            const nth = consumer2(consumerReducerUtils.nthReducer, last, null);
 
             // using take 1 to return a wrapper with only 1 value,
             // then unwrapping the value

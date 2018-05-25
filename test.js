@@ -119,12 +119,12 @@ const sentGen = require('./test-utils');
 
 // console.log('find:', findTest);
 
-const findIndexTest = wrap(
-    [1, 2, 3, 4]
-)
-    .findIndex(val => val > 2);
+// const findIndexTest = wrap(
+//     [1, 2, 3, 4]
+// )
+//     .findIndex(val => val > 2);
 
-console.log('find index:', findIndexTest);
+// console.log('find index:', findIndexTest);
 
 // const takeWhileTest = wrap(
 //     [1, 2, 3, 4]
@@ -150,14 +150,14 @@ console.log('find index:', findIndexTest);
 
 // console.log('drop while test:', dropWhileTest);
 
-// const nthTest = wrap(
-//     [1, 2, 3, 4]
-// );
+const nthTest = wrap(
+    [1, 2, 3, 4]
+);
 
-// console.log('nth - start:', nthTest.nth(0));
-// console.log('nth - middle:', nthTest.nth(2));
-// console.log('nth - end:', nthTest.nth(3));
-// console.log('nth - out of range:', nthTest.nth(4));
+console.log('nth - start:', nthTest.nth(0));
+console.log('nth - middle:', nthTest.nth(2));
+console.log('nth - end:', nthTest.nth(3));
+console.log('nth - out of range:', nthTest.nth(4));
 
 // const rejectTest = wrap(
 //     [1, 2, 3, 4]

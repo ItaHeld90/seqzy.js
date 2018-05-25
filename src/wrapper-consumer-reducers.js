@@ -60,7 +60,29 @@ const findIndexReducer = curry(
 
             currIdx++;
 
-            return newResult;
+            return aggregator(result, newResult);
+        }
+    }
+);
+
+const nthReducer = curry(
+    (n, aggregator) => {
+        let currIdx = 0;
+
+        return (result, item, token) => {
+            const isPass = currIdx === n;
+
+            if (isPass) {
+                token.done();
+            }
+
+            const newResult = isPass
+                ? item
+                : null;
+
+            currIdx++;
+
+            return aggregator(result, newResult);
         }
     }
 );
@@ -69,5 +91,6 @@ module.exports = {
     someReducer,
     everyReducer,
     findReducer,
-    findIndexReducer
+    findIndexReducer,
+    nthReducer,
 };
