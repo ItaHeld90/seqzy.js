@@ -1,4 +1,4 @@
-const { combineList, makeIterator, iterableHead, valuesToPair, identity, last } = require('../helper-utils');
+const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
 const { pipe, compose, concat, or, and } = require('ramda/src');
 const { execTransformations } = require('../iterable-utils');
 const { getFusionReducer } = require('../transduce-utils');
@@ -56,19 +56,12 @@ const wrapIterable = (iterableObj, constructFn) => {
                     );
 
             const fusionableConsumer =
-                (consumeFn, aggregator, initialValue) => {
-                    const reducerByFusion = getFusionReducer(aggregator, initialValue);
-
+                (consumeFn, initialValue) => {
                     return (...args) => {
-                        const allTransformations =
-                            pipe(
-                                consumeFn,
-                                intoFusion,
-                                reducerByFusion,
-                                addTransformation,
-                            )
-                                (...args);
-
+                        const consumeReducer = consumeFn(...args);
+                        const getReducerByFusion = getFusionReducer(consumeReducer, initialValue);
+                        const fusionReducer = getReducerByFusion(fusionList);
+                        const allTransformations = addTransformation(fusionReducer);
                         return execTransformations(allTransformations, iterableObj);
                     }
                 };
@@ -91,21 +84,21 @@ const wrapIterable = (iterableObj, constructFn) => {
             const dropWhile = fusionable(reducerUtils.dropWhileReducer);
 
             // Consumer functions
-            const reduce = (reducerFn) => fusionableConsumer(reducerFn, last, []);
+            const reduce = (reducerFn) => fusionableConsumer(reducerFn, []);
 
             const forEach = consumer(consumerUtils.forEach);
 
-            const some = fusionableConsumer(consumerReducerUtils.someReducer, last, false);
+            const some = fusionableConsumer(consumerReducerUtils.someReducer, false);
 
-            const every = fusionableConsumer(consumerReducerUtils.everyReducer, last, true);
+            const every = fusionableConsumer(consumerReducerUtils.everyReducer, true);
 
-            const find = fusionableConsumer(consumerReducerUtils.findReducer, last, null);
+            const find = fusionableConsumer(consumerReducerUtils.findReducer, null);
 
-            const findIndex = fusionableConsumer(consumerReducerUtils.findIndexReducer, last, -1);
+            const findIndex = fusionableConsumer(consumerReducerUtils.findIndexReducer, -1);
 
-            const nth = fusionableConsumer(consumerReducerUtils.nthReducer, last, null);
+            const nth = fusionableConsumer(consumerReducerUtils.nthReducer, null);
 
-            const head = fusionableConsumer(() => consumerReducerUtils.headReducer, last, null);
+            const head = fusionableConsumer(() => consumerReducerUtils.headReducer, null);
 
             const value =
                 () => {

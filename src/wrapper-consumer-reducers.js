@@ -1,7 +1,5 @@
-const { curry } = require('ramda/src');
-
-const someReducer = curry(
-    (predicateFn, aggregator) =>
+const someReducer =
+    predicateFn =>
         (result, item, token) => {
             const isPass = predicateFn(item);
 
@@ -9,12 +7,11 @@ const someReducer = curry(
                 token.done();
             }
 
-            return aggregator(result, isPass);
-        }
-);
+            return isPass;
+        };
 
-const everyReducer = curry(
-    (predicateFn, aggregator) =>
+const everyReducer =
+    predicateFn =>
         (result, item, token) => {
             const isPass = predicateFn(item);
 
@@ -22,12 +19,11 @@ const everyReducer = curry(
                 token.done();
             }
 
-            return aggregator(result, isPass);
-        }
-);
+            return isPass;
+        };
 
-const findReducer = curry(
-    (predicateFn, aggregator) =>
+const findReducer =
+    predicateFn =>
         (result, item, token) => {
             const isPass = predicateFn(item);
 
@@ -39,12 +35,11 @@ const findReducer = curry(
                 ? item
                 : null;
 
-            return aggregator(result, newResult);
-        }
-);
+            return newResult;
+        };
 
-const findIndexReducer = curry(
-    (predicateFn, aggregator) => {
+const findIndexReducer =
+    predicateFn => {
         let currIdx = 0;
 
         return (result, item, token) => {
@@ -60,13 +55,12 @@ const findIndexReducer = curry(
 
             currIdx++;
 
-            return aggregator(result, newResult);
+            return newResult;
         }
-    }
-);
+    };
 
-const nthReducer = curry(
-    (n, aggregator) => {
+const nthReducer =
+    n => {
         let currIdx = 0;
 
         return (result, item, token) => {
@@ -82,17 +76,16 @@ const nthReducer = curry(
 
             currIdx++;
 
-            return aggregator(result, newResult);
+            return newResult;
         }
-    }
-);
+    };
 
 const headReducer =
-    aggregator =>
-        (result, item, token) => {
-            token.done();
-            return item;
-        };
+    (result, item, token) => {
+        console.log('item:', item);
+        token.done();
+        return item;
+    };
 
 module.exports = {
     someReducer,

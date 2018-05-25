@@ -34,10 +34,6 @@ const identity =
     value =>
         value;
 
-const last = 
-    (...args) =>
-        args[args.length - 1];
-
 module.exports = {
     isIterable,
     makeIterator,
@@ -46,5 +42,4 @@ module.exports = {
     iterableHead,
     not,
     identity,
-    last,
 };

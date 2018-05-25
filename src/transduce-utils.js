@@ -23,11 +23,13 @@ const breakableReduce = curry(
 
 const getFusionReducer = (
     (aggregator, initialValue) =>
-        fusion => {
-            const preparedFusion = compose(
-                ...fusion
-            )
-                (aggregator);
+        fusionList => {
+            const preparedFusion = fusionList.length > 0
+                ? compose(
+                    ...fusionList
+                )
+                    (aggregator)
+                : aggregator;
 
             return breakableReduce(preparedFusion, initialValue);
         }
