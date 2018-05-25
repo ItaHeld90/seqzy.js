@@ -3,16 +3,30 @@ const { curry } = require('ramda/src');
 const someReducer = curry(
     (predicateFn, aggregator) =>
         (result, item, idx, token) => {
-            const isFound = predicateFn(item);
+            const isPass = predicateFn(item);
 
-            if (isFound) {
+            if (isPass) {
                 token.done();
             }
 
-            return isFound;
+            return isPass;
+        }
+);
+
+const everyReducer = curry(
+    (predicateFn, aggregator) =>
+        (result, item, idx, token) => {
+            const isPass = predicateFn(item);
+
+            if (!isPass) {
+                token.done();
+            }
+
+            return isPass;
         }
 );
 
 module.exports = {
-    someReducer
+    someReducer,
+    everyReducer,
 };

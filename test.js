@@ -101,16 +101,15 @@ console.log(setWrapper);
 const someTest = wrap(
     [1, 2, 3, 4]
 )
-    .filter(val => val > 2)
     .some(val => val % 2 === 0)
 
-console.log(someTest);
+console.log('some:', someTest);
 
 const everyTest =
     pukkaGen
         .every(val => val.includes('pukka'));
 
-console.log(everyTest);
+console.log('every:', everyTest);
 
 // Test Find
 const findTest = wrap(
