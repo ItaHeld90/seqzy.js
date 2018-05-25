@@ -56,15 +56,14 @@ const wrapIterable = (iterableObj, constructFn) => {
                     );
 
             const fusionableConsumer =
-                (consumeFn, initialValue) => {
-                    return (...args) => {
+                (consumeFn, initialValue) =>
+                    (...args) => {
                         const consumeReducer = consumeFn(...args);
                         const getReducerByFusion = getFusionReducer(consumeReducer, initialValue);
                         const fusionReducer = getReducerByFusion(fusionList);
                         const allTransformations = addTransformation(fusionReducer);
                         return execTransformations(allTransformations, iterableObj);
-                    }
-                };
+                    };
 
             // Fusionable functions
             const map = fusionable(reducerUtils.mapReducer);
