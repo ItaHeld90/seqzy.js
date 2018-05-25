@@ -26,7 +26,25 @@ const everyReducer = curry(
         }
 );
 
+const findReducer = curry(
+    (predicateFn, aggregator) =>
+        (result, item, idx, token) => {
+            const isPass = predicateFn(item);
+
+            if (isPass) {
+                token.done();
+            }
+
+            const newResult = isPass
+                ? item
+                : null;
+
+            return aggregator(result, newResult);
+        }
+)
+
 module.exports = {
     someReducer,
     everyReducer,
+    findReducer
 };

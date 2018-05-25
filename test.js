@@ -111,13 +111,13 @@ const everyTest =
 
 console.log('every:', everyTest);
 
-// // Test Find
-// const findTest = wrap(
-//     [1, 2, 3, 4]
-// )
-//     .find(val => val > 2);
+// Test Find
+const findTest = wrap(
+    [1, 2, 3, 4]
+)
+    .find(val => val > 2);
 
-// console.log('find:', findTest);
+console.log('find:', findTest);
 
 // const findIndexTest = wrap(
 //     [1, 2, 3, 4]

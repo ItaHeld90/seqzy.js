@@ -101,7 +101,7 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const every = consumer2(consumerReducerUtils.everyReducer, and, true);
 
-            const find = consumer(consumerUtils.find);
+            const find = consumer2(consumerReducerUtils.findReducer, or, null);
 
             const findIndex = consumer(consumerUtils.findIndex);
 
