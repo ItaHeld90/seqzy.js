@@ -1,10 +1,11 @@
 const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
-const { pipe, compose, concat } = require('ramda/src');
+const { pipe, compose, concat, or } = require('ramda/src');
 const { execTransformations } = require('../iterable-utils');
 const { getFusionReducer } = require('../transduce-utils');
 
 const transUtils = require('../wrapper-transformations');
 const consumerUtils = require('../wrapper-consumers');
+const consumerReducerUtils = require('../wrapper-consumer-reducers');
 const reducerUtils = require('../wrapper-reducers');
 
 // wrapper
@@ -22,7 +23,7 @@ const wrapIterable = (iterableObj, constructFn) => {
             const addFusionToTransformations =
                 () =>
                     fusionList.length > 0
-                        ? addTransformation(getFusionReducer(fusionList))
+                        ? addTransformation(getFusionReducer(combineList, fusionList))
                         : transformations;
 
             const rewrapWithNewTrans =
@@ -37,19 +38,37 @@ const wrapIterable = (iterableObj, constructFn) => {
                 fuse
             );
 
-            const fusionable = 
+            const fusionable =
                 reducerFn =>
                     pipe(
                         reducerFn,
                         fuseIn
                     );
-            
+
             const consumer =
                 consumerFn =>
                     pipe(
                         consumerFn,
                         consume
                     )
+
+            const consumer2 =
+                (consumeFn, aggregator) =>
+                    (...args) => {
+                        // create consumer reducer
+                        const reducer = consumeFn(...args);
+                        // add to fusion
+                        const newFusion = combineList(fusionList, reducer);
+                        // add fusion to transformations
+                        const allTransformations =
+                            pipe(
+                                getFusionReducer(aggregator),
+                                addTransformation
+                            )
+                                (newFusion);
+                        // execute transformations
+                        return execTransformations(allTransformations, iterableObj);
+                    }
 
             // Fusionable functions
             const map = fusionable(reducerUtils.mapReducer);
@@ -73,7 +92,7 @@ const wrapIterable = (iterableObj, constructFn) => {
 
             const forEach = consumer(consumerUtils.forEach);
 
-            const some = consumer(consumerUtils.some);
+            const some = consumer2(consumerReducerUtils.someReducer, or);
 
             const every = consumer(consumerUtils.every);
 

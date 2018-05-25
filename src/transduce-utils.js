@@ -1,6 +1,5 @@
 const { createToken } = require('./transduce-token');
 const { curry, compose } = require('ramda/src');
-const { combineList } = require('./helper-utils')
 
 const breakableReduce = curry(
     (reducerFn, initialValue, iterableObj) => {
@@ -22,15 +21,16 @@ const breakableReduce = curry(
     }
 );
 
-const getFusionReducer =
-    fusion => {
+const getFusionReducer = curry(
+    (aggregator, fusion) => {
         const preparedFusion = compose(
             ...fusion
         )
-            (combineList);
+            (aggregator);
 
         return breakableReduce(preparedFusion, []);
     }
+);
 
 module.exports = {
     breakableReduce,

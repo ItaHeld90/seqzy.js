@@ -101,6 +101,7 @@ console.log(setWrapper);
 const someTest = wrap(
     [1, 2, 3, 4]
 )
+    .filter(val => val > 2)
     .some(val => val % 2 === 0)
 
 console.log(someTest);
