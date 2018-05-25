@@ -2,7 +2,7 @@ const { curry } = require('ramda/src');
 
 const someReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item, idx, token) => {
+        (result, item, token) => {
             const isPass = predicateFn(item);
 
             if (isPass) {
@@ -15,7 +15,7 @@ const someReducer = curry(
 
 const everyReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item, idx, token) => {
+        (result, item, token) => {
             const isPass = predicateFn(item);
 
             if (!isPass) {
@@ -28,7 +28,7 @@ const everyReducer = curry(
 
 const findReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item, idx, token) => {
+        (result, item, token) => {
             const isPass = predicateFn(item);
 
             if (isPass) {

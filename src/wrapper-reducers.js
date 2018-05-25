@@ -3,16 +3,16 @@ const { curry } = require('ramda/src');
 
 const mapReducer = curry(
     (mapperFn, aggregator) =>
-        (result, item, idx, token) => {
-            return aggregator(result, mapperFn(item), idx, token);
+        (result, item, token) => {
+            return aggregator(result, mapperFn(item), token);
         }
 );
 
 const filterReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item, idx, token) => {
+        (result, item, token) => {
             return predicateFn(item)
-                ? aggregator(result, item, idx, token)
+                ? aggregator(result, item, token)
                 : result
         }
 );
@@ -28,11 +28,11 @@ const takeReducer = curry(
     (times, aggregator) => {
         let counter = times;
 
-        return (result, item, idx, token) => {
+        return (result, item, token) => {
             const shouldProceed = counter > 0;
 
             const nextResult = shouldProceed
-                ? aggregator(result, item, idx, token)
+                ? aggregator(result, item, token)
                 : result;
 
             if (shouldProceed) {
@@ -49,11 +49,11 @@ const takeReducer = curry(
 
 const takeWhileReducer = curry(
     (predicateFn, aggregator) =>
-        (result, item, idx, token) => {
+        (result, item, token) => {
             const shouldProceed = predicateFn(item);
 
             const nextResult = shouldProceed
-                ? aggregator(result, item, idx, token)
+                ? aggregator(result, item, token)
                 : result;
 
             if (!shouldProceed) {
@@ -68,11 +68,11 @@ const dropReducer = curry(
     (times, aggregator) => {
         let counter = times;
 
-        return (result, item, idx, token) => {
+        return (result, item, token) => {
             const shouldTake = counter <= 0;
 
             const nextResult = shouldTake
-                ? aggregator(result, item, idx, token)
+                ? aggregator(result, item, token)
                 : result;
 
             if (!shouldTake) {
@@ -88,11 +88,11 @@ const dropWhileReducer = curry(
     (predicateFn, aggregator) => {
         let shouldTake = false;
 
-        return (result, item, idx, token) => {
+        return (result, item, token) => {
             shouldTake |= !predicateFn(item)
 
             return shouldTake
-                ? aggregator(result, item, idx, token)
+                ? aggregator(result, item, token)
                 : result;
         }
     }

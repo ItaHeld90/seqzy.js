@@ -8,7 +8,7 @@ const breakableReduce = curry(
         const token = createToken();
 
         for (let item of iterableObj) {
-            result = reducerFn(result, item, idx, token);
+            result = reducerFn(result, item, token);
 
             if (token.isDone()) {
                 break;
