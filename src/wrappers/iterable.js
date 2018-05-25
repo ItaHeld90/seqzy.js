@@ -34,8 +34,10 @@ const wrapIterable = (iterableObj, constructFn) => {
                     return rewrap(updatedTransformations);
                 };
 
+            const intoFusion = combineList(fusionList);
+
             const fuseIn = pipe(
-                combineList(fusionList),
+                intoFusion,
                 fuse
             );
 
@@ -51,29 +53,25 @@ const wrapIterable = (iterableObj, constructFn) => {
                     pipe(
                         consumerFn,
                         consume
-                    )
+                    );
 
-            const consumer2 =
-                (consumeFn, aggregator, initialValue) =>
-                    (...args) => {
-                        // create consumer reducer
-                        const reducer = consumeFn(...args);
-                        // add to fusion
-                        const newFusion = combineList(fusionList, reducer);
-                        // get fusion reducer calculator
-                        const calculateFusionReducer =
-                            getFusionReducer(aggregator, initialValue);
+            const fusionableConsumer =
+                (consumeFn, aggregator, initialValue) => {
+                    const reducerByFusion = getFusionReducer(aggregator, initialValue);
 
-                        // add fusion to transformations
+                    return (...args) => {
                         const allTransformations =
                             pipe(
-                                calculateFusionReducer,
-                                addTransformation
+                                consumeFn,
+                                intoFusion,
+                                reducerByFusion,
+                                addTransformation,
                             )
-                                (newFusion);
-                        // execute transformations
+                                (...args);
+
                         return execTransformations(allTransformations, iterableObj);
                     }
+                };
 
             // Fusionable functions
             const map = fusionable(reducerUtils.mapReducer);
@@ -93,21 +91,21 @@ const wrapIterable = (iterableObj, constructFn) => {
             const dropWhile = fusionable(reducerUtils.dropWhileReducer);
 
             // Consumer functions
-            const reduce = consumer(consumerUtils.reduce);
+            const reduce = (reducerFn) => fusionableConsumer(reducerFn, last, []);
 
             const forEach = consumer(consumerUtils.forEach);
 
-            const some = consumer2(consumerReducerUtils.someReducer, last, false);
+            const some = fusionableConsumer(consumerReducerUtils.someReducer, last, false);
 
-            const every = consumer2(consumerReducerUtils.everyReducer, last, true);
+            const every = fusionableConsumer(consumerReducerUtils.everyReducer, last, true);
 
-            const find = consumer2(consumerReducerUtils.findReducer, last, null);
+            const find = fusionableConsumer(consumerReducerUtils.findReducer, last, null);
 
-            const findIndex = consumer2(consumerReducerUtils.findIndexReducer, last, -1);
+            const findIndex = fusionableConsumer(consumerReducerUtils.findIndexReducer, last, -1);
 
-            const nth = consumer2(consumerReducerUtils.nthReducer, last, null);
+            const nth = fusionableConsumer(consumerReducerUtils.nthReducer, last, null);
 
-            const head = consumer2(() => consumerReducerUtils.headReducer, last, null);
+            const head = fusionableConsumer(() => consumerReducerUtils.headReducer, last, null);
 
             const value =
                 () => {
