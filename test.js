@@ -213,6 +213,13 @@ const constructTest = wrap(
     .value();
 
 console.log('construct:', constructTest);
+
+const forEachTest = wrap(
+    [1, 2, 3, 4]
+)
+    .filter(val => val > 1)
+    .map(val => val * 10)
+    .forEach(val => console.log('each:', val));
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

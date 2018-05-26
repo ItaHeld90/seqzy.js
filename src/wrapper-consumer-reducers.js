@@ -80,18 +80,24 @@ const nthReducer =
         }
     };
 
-const reduce =
-    reducerFn =>
-        (result, item, token) => {
-            return reducerFn(result, item);
-        };
-
 const headReducer =
     (result, item, token) => {
         console.log('item:', item);
         token.done();
         return item;
     };
+
+const reduce =
+    reducerFn =>
+        (result, item, token) => {
+            return reducerFn(result, item);
+        };
+
+const forEachReducer =
+    fn =>
+        (result, item, token) => {
+            fn(item);
+        }
 
 module.exports = {
     someReducer,
@@ -101,4 +107,5 @@ module.exports = {
     nthReducer,
     headReducer,
     reduce,
+    forEachReducer,
 };

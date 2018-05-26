@@ -88,7 +88,7 @@ const wrapIterable = (iterableObj, constructFn) => {
                     (consumerReducerUtils.reduce, initialValue)
                     (reducerFn);
 
-            const forEach = consumer(consumerUtils.forEach);
+            const forEach = fusionableConsumer(consumerReducerUtils.forEachReducer, null);
 
             const some = fusionableConsumer(consumerReducerUtils.someReducer, false);
 
