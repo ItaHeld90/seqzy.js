@@ -80,6 +80,12 @@ const nthReducer =
         }
     };
 
+const reduce =
+    reducerFn =>
+        (result, item, token) => {
+            return reducerFn(result, item);
+        };
+
 const headReducer =
     (result, item, token) => {
         console.log('item:', item);
@@ -94,4 +100,5 @@ module.exports = {
     findIndexReducer,
     nthReducer,
     headReducer,
+    reduce,
 };

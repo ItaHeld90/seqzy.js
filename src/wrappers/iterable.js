@@ -83,7 +83,10 @@ const wrapIterable = (iterableObj, constructFn) => {
             const dropWhile = fusionable(reducerUtils.dropWhileReducer);
 
             // Consumer functions
-            const reduce = (reducerFn) => fusionableConsumer(reducerFn, []);
+            const reduce = (reducerFn, initialValue) =>
+                fusionableConsumer
+                    (consumerReducerUtils.reduce, initialValue)
+                    (reducerFn);
 
             const forEach = consumer(consumerUtils.forEach);
 

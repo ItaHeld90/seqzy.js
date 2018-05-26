@@ -75,7 +75,9 @@ const wrappedMap3 = wrap(
     new Map().set('x', 1).set('y', 2)
 )
     .map(([key, val]) => [key + val, val])
-    .reduce((result, [, val]) => result + val, 0)
+    .reduce((result, [, val]) => result + val, 0);
+
+console.log('reduced map:', wrappedMap3);
 
 const header = wrap(
     new Map().set('x', 1).set('y', 2)
@@ -210,7 +212,7 @@ const constructTest = wrap(
     .map(val => val.toUpperCase())
     .value();
 
-console.log(constructTest);
+console.log('construct:', constructTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors
