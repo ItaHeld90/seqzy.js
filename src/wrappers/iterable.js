@@ -1,140 +1,112 @@
 const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
 const { pipe, compose, concat, or, and } = require('ramda/src');
-const { execTransformations } = require('../iterable-utils');
 const { getFusionReducer } = require('../transduce-utils');
 
-const transUtils = require('../wrapper-transformations');
-const consumerUtils = require('../wrapper-consumers');
-const consumerReducerUtils = require('../wrapper-consumer-reducers');
+const consumerUtils = require('../wrapper-consumer-reducers');
 const reducerUtils = require('../wrapper-reducers');
 
 // wrapper
 const wrapIterable = (iterableObj, constructFn) => {
-    return function rewrap(transformations) {
-        const addTransformation = combineList(transformations);
+    return function fuse(fusionList) {
         const defaultFusionReducerCalculator = getFusionReducer(combineList, []);
 
-        return function fuse(fusionList) {
-            const consume = (consumeFn) => {
-                const allTransformations = addFusionToTransformations();
-                const transformed = execTransformations(allTransformations, iterableObj);
-                return consumeFn(transformed);
-            };
+        const consume = (consumeFn) => {
+            const transformation = defaultFusionReducerCalculator(fusionList);
+            const transformed = transformation(iterableObj);
+            return consumeFn(transformed);
+        };
 
-            const addFusionToTransformations =
-                () =>
-                    fusionList.length > 0
-                        ? addTransformation(defaultFusionReducerCalculator(fusionList))
-                        : transformations;
+        const intoFusion = combineList(fusionList);
 
-            const rewrapWithNewTrans =
-                (newTransformation) => {
-                    let updatedTransformations = addFusionToTransformations();
-                    updatedTransformations = addTransformation(newTransformation);
-                    return rewrap(updatedTransformations);
+        const fuseIn = pipe(
+            intoFusion,
+            fuse
+        );
+
+        const reducer =
+            reducerFn =>
+                pipe(
+                    reducerFn,
+                    fuseIn
+                );
+
+        const consumer =
+            (consumeFn, initialValue) =>
+                (...args) => {
+                    const consumeReducer = consumeFn(...args);
+                    const getReducerByFusion = getFusionReducer(consumeReducer, initialValue);
+                    const fusionReducer = getReducerByFusion(fusionList);
+                    return fusionReducer(iterableObj);
                 };
 
-            const intoFusion = combineList(fusionList);
+        // Fusionable functions
+        const map = reducer(reducerUtils.mapReducer);
 
-            const fuseIn = pipe(
-                intoFusion,
-                fuse
-            );
+        const filter = reducer(reducerUtils.filterReducer);
 
-            const fusionable =
-                reducerFn =>
-                    pipe(
-                        reducerFn,
-                        fuseIn
-                    );
+        const reject = reducer(reducerUtils.rejectReducer);
 
-            const consumer =
-                consumerFn =>
-                    pipe(
-                        consumerFn,
-                        consume
-                    );
+        const compact = reducer(() => reducerUtils.compactReducer);
 
-            const fusionableConsumer =
-                (consumeFn, initialValue) =>
-                    (...args) => {
-                        const consumeReducer = consumeFn(...args);
-                        const getReducerByFusion = getFusionReducer(consumeReducer, initialValue);
-                        const fusionReducer = getReducerByFusion(fusionList);
-                        const allTransformations = addTransformation(fusionReducer);
-                        return execTransformations(allTransformations, iterableObj);
-                    };
+        const take = reducer(reducerUtils.takeReducer);
 
-            // Fusionable functions
-            const map = fusionable(reducerUtils.mapReducer);
+        const takeWhile = reducer(reducerUtils.takeWhileReducer);
 
-            const filter = fusionable(reducerUtils.filterReducer);
+        const drop = reducer(reducerUtils.dropReducer);
 
-            const reject = fusionable(reducerUtils.rejectReducer);
+        const dropWhile = reducer(reducerUtils.dropWhileReducer);
 
-            const compact = fusionable(() => reducerUtils.compactReducer);
+        // Consumer functions
+        const reduce = (reducerFn, initialValue) =>
+            consumer
+                (consumerUtils.reduce, initialValue)
+                (reducerFn);
 
-            const take = fusionable(reducerUtils.takeReducer);
+        const forEach = consumer(consumerUtils.forEachReducer, null);
 
-            const takeWhile = fusionable(reducerUtils.takeWhileReducer);
+        const some = consumer(consumerUtils.someReducer, false);
 
-            const drop = fusionable(reducerUtils.dropReducer);
+        const every = consumer(consumerUtils.everyReducer, true);
 
-            const dropWhile = fusionable(reducerUtils.dropWhileReducer);
+        const find = consumer(consumerUtils.findReducer, null);
 
-            // Consumer functions
-            const reduce = (reducerFn, initialValue) =>
-                fusionableConsumer
-                    (consumerReducerUtils.reduce, initialValue)
-                    (reducerFn);
+        const findIndex = consumer(consumerUtils.findIndexReducer, -1);
 
-            const forEach = fusionableConsumer(consumerReducerUtils.forEachReducer, null);
+        const nth = consumer(consumerUtils.nthReducer, null);
 
-            const some = fusionableConsumer(consumerReducerUtils.someReducer, false);
+        const head = consumer(() => consumerUtils.headReducer, null);
 
-            const every = fusionableConsumer(consumerReducerUtils.everyReducer, true);
-
-            const find = fusionableConsumer(consumerReducerUtils.findReducer, null);
-
-            const findIndex = fusionableConsumer(consumerReducerUtils.findIndexReducer, -1);
-
-            const nth = fusionableConsumer(consumerReducerUtils.nthReducer, null);
-
-            const head = fusionableConsumer(() => consumerReducerUtils.headReducer, null);
-
-            const value =
-                () => {
-                    const resultIterable = consume(identity);
-                    return constructFn(resultIterable);
-                };
-
-            const wrapper = {
-                [Symbol.iterator]: () => {
-                    const transformed = consume(identity);
-                    return makeIterator(transformed);
-                },
-                value,
-                map,
-                filter,
-                reject,
-                take,
-                takeWhile,
-                drop,
-                dropWhile,
-                compact,
-                reduce,
-                forEach,
-                head,
-                some,
-                every,
-                find,
-                findIndex,
-                nth
+        const value =
+            () => {
+                const resultIterable = consume(identity);
+                return constructFn(resultIterable);
             };
 
-            return wrapper;
-        }
-            ([]);
+        const wrapper = {
+            [Symbol.iterator]: () => {
+                const transformed = consume(identity);
+                return makeIterator(transformed);
+            },
+            value,
+            map,
+            filter,
+            reject,
+            take,
+            takeWhile,
+            drop,
+            dropWhile,
+            compact,
+            reduce,
+            forEach,
+            head,
+            some,
+            every,
+            find,
+            findIndex,
+            nth
+        };
+
+        return wrapper;
     }
         ([]);
 };

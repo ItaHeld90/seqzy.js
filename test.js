@@ -1,5 +1,6 @@
 const { wrap } = require("./app");
 const sentGen = require('./test-utils');
+const { identity } = require('./src/helper-utils');
 
 const wrappedSentGen = wrap(
     sentGen
@@ -47,8 +48,7 @@ const obj = {
 
 const wrappedObj = wrap(
     obj,
-    (result, val) => [...result, val],
-    () => []
+    identity
 )
     .map(val => val * 3)
     .filter(val => val > 40)

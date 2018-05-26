@@ -8,3 +8,10 @@ const fiddle1 = wrap(
     .take(20)
     .map(sent => sent.toUpperCase())
     .forEach(console.log);
+
+const fiddle2 = wrap(
+    [1, 2, 3, 4]
+)
+    .value();
+
+console.log(fiddle2);
