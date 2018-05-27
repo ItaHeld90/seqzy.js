@@ -220,6 +220,14 @@ const forEachTest = wrap(
     .filter(val => val > 1)
     .map(val => val * 10)
     .forEach(val => console.log('each:', val));
+
+const toArrayTest = wrap(
+    [1, 2, 3, 4]
+)
+    .map(val => val * 10)
+    .toArray();
+
+console.log('toArray:', toArrayTest);
 // const notIterable = wrap({}, () => ({}), {});
 
 // TODO: Fix errors

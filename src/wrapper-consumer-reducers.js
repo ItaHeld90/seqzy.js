@@ -97,7 +97,14 @@ const forEachReducer =
     fn =>
         (result, item, token) => {
             fn(item);
-        }
+        };
+
+const toArray =
+    (result, item, token) => {
+        // pushing the item to the result for performance considerations
+        result.push(item);
+        return result;
+    }
 
 module.exports = {
     someReducer,
@@ -108,4 +115,5 @@ module.exports = {
     headReducer,
     reduce,
     forEachReducer,
+    toArray
 };
