@@ -76,6 +76,8 @@ const wrapIterable = (iterableObj, constructFn) => {
 
         const head = consumer(() => consumerUtils.headReducer, null);
 
+        const toArray = consumer(() => consumerUtils.toArray, []);
+
         const value =
             () => {
                 const resultIterable = consume(identity);
@@ -103,7 +105,8 @@ const wrapIterable = (iterableObj, constructFn) => {
             every,
             find,
             findIndex,
-            nth
+            nth,
+            toArray
         };
 
         return wrapper;
