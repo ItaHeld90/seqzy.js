@@ -25,6 +25,4 @@ const wrap = (iterableObj, construct) => {
     return wrapList(iterableObj, construct);
 }
 
-module.exports = {
-    wrap
-};
+module.exports = wrap;
