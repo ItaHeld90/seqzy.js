@@ -1,4 +1,38 @@
-const { curry } = require('ramda/src');
+const curry = (fn, arity = fn.length) =>
+    function nextCurried(prevArgs) {
+        return (...nextArgs) => {
+            var args = [...prevArgs, ...nextArgs];
+
+            if (args.length >= arity) {
+                return fn(...args);
+            }
+            else {
+                return nextCurried(args);
+            }
+        };
+    }([]);
+
+const reverseArgs =
+    fn =>
+        (...args) =>
+            fn(...args.reverse());
+
+const compose = (...fns) =>
+    result =>
+        fns.reduceRight(
+            (result, fn) =>
+                fn(result)
+            , result
+        );
+
+const pipe = reverseArgs(compose);
+
+const join = curry(
+    (separator, charList) =>
+        charList.length
+            ? charList.reduce((result, c) => result.concat(separator, c))
+            : ''
+);
 
 const isIterable = (obj) => {
     if (obj == null) {
@@ -16,16 +50,7 @@ const combineList = curry(
         [...list, item]
 );
 
-const valuesToPair = curry(
-    (value1, value2) => [value1, value2]
-);
-
-const iterableHead = iterableObj => {
-    const iterator = makeIterator(iterableObj);
-    return iterator.next().value;
-};
-
-const not = 
+const not =
     predicateFn =>
         (...args) =>
             !predicateFn(...args);
@@ -35,11 +60,13 @@ const identity =
         value;
 
 module.exports = {
+    curry,
+    compose,
+    pipe,
+    join,
     isIterable,
     makeIterator,
     combineList,
-    valuesToPair,
-    iterableHead,
     not,
     identity,
 };

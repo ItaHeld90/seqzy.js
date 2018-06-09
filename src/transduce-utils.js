@@ -1,5 +1,5 @@
 const { createToken } = require('./transduce-token');
-const { curry, compose } = require('ramda/src');
+const { compose, curry } = require('./helper-utils');
 
 const breakableReduce = curry(
     (reducerFn, initialValue, iterableObj) => {

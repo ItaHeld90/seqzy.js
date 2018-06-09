@@ -1,5 +1,4 @@
-const { combineList, makeIterator, iterableHead, valuesToPair, identity } = require('../helper-utils');
-const { pipe, compose, concat, or, and } = require('ramda/src');
+const { combineList, makeIterator, identity, pipe } = require('../helper-utils');
 const { getFusionReducer } = require('../transduce-utils');
 
 const consumerUtils = require('../wrapper-consumer-reducers');

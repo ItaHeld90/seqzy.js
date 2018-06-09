@@ -1,5 +1,4 @@
-const { not, identity } = require('./helper-utils');
-const { curry } = require('ramda/src');
+const { not, identity, curry } = require('./helper-utils');
 
 const mapReducer = curry(
     (mapperFn, aggregator) =>
