@@ -1,15 +1,19 @@
 const { curry } = require('ramda/src');
 
-const pipe = (...fns) =>
-    result => {
-        var list = [...fns];
+var reverseArgs =
+    fn =>
+        (...args) =>
+            fn(...args.reverse());
 
-        while (list.length > 0) {
-            result = list.shift()(result);
-        }
+const compose = (...fns) =>
+    result =>
+        fns.reduceRight(
+            (result, fn) =>
+                fn(result)
+            , result
+        );
 
-        return result;
-    };
+const pipe = reverseArgs(compose);
 
 const isIterable = (obj) => {
     if (obj == null) {
@@ -37,6 +41,7 @@ const identity =
         value;
 
 module.exports = {
+    compose,
     pipe,
     isIterable,
     makeIterator,
