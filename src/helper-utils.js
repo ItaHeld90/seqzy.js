@@ -16,13 +16,11 @@ const compose = (...fns) =>
 const pipe = reverseArgs(compose);
 
 const join = curry(
-    (separator, charList) => {
-        if (charList.length === 0) {
-            return '';
-        }
-
-        return charList.reduce((result, c) => result.concat(separator, c));
-    });
+    (separator, charList) =>
+        charList.length
+            ? charList.reduce((result, c) => result.concat(separator, c))
+            : ''
+    );
 
 const isIterable = (obj) => {
     if (obj == null) {
