@@ -1,9 +1,9 @@
-const wrapIterable = require('./src/wrappers/iterable');
-const wrapMap = require('./src/wrappers/map');
-const wrapSet = require('./src/wrappers/set');
-const wrapString = require('./src/wrappers/string');
-const wrapList = require('./src/wrappers/list');
-const { isIterable } = require('./src/helper-utils');
+const wrapIterable = require('./wrappers/iterable');
+const wrapMap = require('./wrappers/map');
+const wrapSet = require('./wrappers/set');
+const wrapString = require('./wrappers/string');
+const wrapList = require('./wrappers/list');
+const { isIterable } = require('./helper-utils');
 
 const wrap = (iterableObj, construct) => {
     if (!isIterable(iterableObj)) {
@@ -25,6 +25,4 @@ const wrap = (iterableObj, construct) => {
     return wrapList(iterableObj, construct);
 }
 
-module.exports = {
-    wrap
-};
+module.exports = wrap;

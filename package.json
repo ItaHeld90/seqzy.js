@@ -1,14 +1,28 @@
 {
-  "name": "iterable-wrapper",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "name": "seqzy.js",
+  "version": "0.0.0",
+  "description": "Lazy sequence library, tailor made for Javascript Iterables",
+  "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rimraf dist",
+    "build": "babel src --out-dir dist --copy-files"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ItaHeld90/seqzy.js.git"
+  },
+  "author": "Itamar Held",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "ramda": "0.25.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "rimraf": "2.6.2"
   }
 }
