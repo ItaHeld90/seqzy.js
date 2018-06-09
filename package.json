@@ -1,6 +1,6 @@
 {
   "name": "seqzy.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lazy sequence library, tailor made for Javascript Iterables",
   "main": "dist/app.js",
   "scripts": {
