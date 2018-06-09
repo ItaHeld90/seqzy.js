@@ -1,4 +1,16 @@
-const { curry } = require('ramda/src');
+const curry = (fn, arity = fn.length) =>
+    function nextCurried(prevArgs) {
+        return (...nextArgs) => {
+            var args = [...prevArgs, ...nextArgs];
+
+            if (args.length >= arity) {
+                return fn(...args);
+            }
+            else {
+                return nextCurried(args);
+            }
+        };
+    }([]);
 
 const reverseArgs =
     fn =>
@@ -20,7 +32,7 @@ const join = curry(
         charList.length
             ? charList.reduce((result, c) => result.concat(separator, c))
             : ''
-    );
+);
 
 const isIterable = (obj) => {
     if (obj == null) {
@@ -48,6 +60,7 @@ const identity =
         value;
 
 module.exports = {
+    curry,
     compose,
     pipe,
     join,
