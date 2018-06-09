@@ -2,10 +2,11 @@
   "name": "seqzy.js",
   "version": "0.0.0",
   "description": "Lazy sequence library, tailor made for Javascript Iterables",
-  "main": "app.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir dist --copy-files --ignore *.test.js"
+    "prebuild": "rimraf dist",
+    "build": "babel src --out-dir dist --copy-files"
   },
   "repository": {
     "type": "git",
@@ -13,11 +14,15 @@
   },
   "author": "Itamar Held",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "ramda": "0.25.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
-    "babel-preset-env": "1.7.0"
+    "babel-preset-env": "1.7.0",
+    "rimraf": "2.6.2"
   }
 }
