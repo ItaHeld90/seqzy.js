@@ -1,5 +1,5 @@
 const wrap = require('./iterable');
-const { join } = require('ramda/src');
+const { join } = require('../helper-utils');
 
 module.exports = function wrapString(str) {
     return wrap(
