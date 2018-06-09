@@ -16,15 +16,6 @@ const combineList = curry(
         [...list, item]
 );
 
-const valuesToPair = curry(
-    (value1, value2) => [value1, value2]
-);
-
-const iterableHead = iterableObj => {
-    const iterator = makeIterator(iterableObj);
-    return iterator.next().value;
-};
-
 const not = 
     predicateFn =>
         (...args) =>
@@ -38,8 +29,6 @@ module.exports = {
     isIterable,
     makeIterator,
     combineList,
-    valuesToPair,
-    iterableHead,
     not,
     identity,
 };
