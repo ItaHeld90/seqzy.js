@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
+    "test:watch": "mocha -w --compilers js:babel-register",
     "prebuild": "rimraf dist",
     "build": "babel src --out-dir dist --copy-files"
   },
@@ -23,6 +24,7 @@
     "babel-register": "6.26.0",
     "chai": "4.1.2",
     "mocha": "5.2.0",
-    "rimraf": "2.6.2"
+    "rimraf": "2.6.2",
+    "sinon": "6.0.0"
   }
 }
