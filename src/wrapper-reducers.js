@@ -1,101 +1,101 @@
-const { not, identity, curry } = require('./helper-utils');
+const { not, identity } = require('./helper-utils');
 
-const mapReducer = curry(
-    (mapperFn, aggregator) =>
-        (result, item, token) => {
-            return aggregator(result, mapperFn(item), token);
-        }
-);
+const mapReducer =
+    mapperFn =>
+        aggregator =>
+            (result, item, token) =>
+                aggregator(result, mapperFn(item), token);
 
-const filterReducer = curry(
-    (predicateFn, aggregator) =>
-        (result, item, token) => {
-            return predicateFn(item)
-                ? aggregator(result, item, token)
-                : result
-        }
-);
+const filterReducer =
+    predicateFn =>
+        aggregator =>
+            (result, item, token) =>
+                predicateFn(item)
+                    ? aggregator(result, item, token)
+                    : result;
 
-const rejectReducer = curry(
-    (predicateFn, aggregator) =>
-        filterReducer(not(predicateFn), aggregator)
-);
+const rejectReducer =
+    predicateFn =>
+        aggregator =>
+            filterReducer
+                (not(predicateFn))
+                (aggregator);
 
 const compactReducer = filterReducer(identity);
 
-const takeReducer = curry(
-    (times, aggregator) => {
-        let counter = times;
+const takeReducer =
+    times =>
+        aggregator => {
+            let counter = times;
 
-        return (result, item, token) => {
-            const shouldProceed = counter > 0;
+            return (result, item, token) => {
+                const shouldProceed = counter > 0;
 
-            const nextResult = shouldProceed
-                ? aggregator(result, item, token)
-                : result;
+                const nextResult = shouldProceed
+                    ? aggregator(result, item, token)
+                    : result;
 
-            if (shouldProceed) {
-                counter--;
+                if (shouldProceed) {
+                    counter--;
+                }
+                else {
+                    token.done();
+                }
+
+                return nextResult;
             }
-            else {
-                token.done();
+        };
+
+const takeWhileReducer =
+    predicateFn =>
+        aggregator =>
+            (result, item, token) => {
+                const shouldProceed = predicateFn(item);
+
+                const nextResult = shouldProceed
+                    ? aggregator(result, item, token)
+                    : result;
+
+                if (!shouldProceed) {
+                    token.done();
+                }
+
+                return nextResult;
+            };
+
+const dropReducer =
+    times =>
+        aggregator => {
+            let counter = times;
+
+            return (result, item, token) => {
+                const shouldTake = counter <= 0;
+
+                const nextResult = shouldTake
+                    ? aggregator(result, item, token)
+                    : result;
+
+                if (!shouldTake) {
+                    counter--;
+                }
+
+                return nextResult;
             }
+        };
 
-            return nextResult;
-        }
-    }
-)
+const dropWhileReducer =
+    predicateFn =>
+        aggregator => {
+            let shouldTake = false;
 
-const takeWhileReducer = curry(
-    (predicateFn, aggregator) =>
-        (result, item, token) => {
-            const shouldProceed = predicateFn(item);
+            return (result, item, token) => {
+                shouldTake |= !predicateFn(item)
 
-            const nextResult = shouldProceed
-                ? aggregator(result, item, token)
-                : result;
-
-            if (!shouldProceed) {
-                token.done();
+                return shouldTake
+                    ? aggregator(result, item, token)
+                    : result;
             }
-
-            return nextResult;
-        }
-);
-
-const dropReducer = curry(
-    (times, aggregator) => {
-        let counter = times;
-
-        return (result, item, token) => {
-            const shouldTake = counter <= 0;
-
-            const nextResult = shouldTake
-                ? aggregator(result, item, token)
-                : result;
-
-            if (!shouldTake) {
-                counter--;
-            }
-
-            return nextResult;
-        }
-    }
-);
-
-const dropWhileReducer = curry(
-    (predicateFn, aggregator) => {
-        let shouldTake = false;
-
-        return (result, item, token) => {
-            shouldTake |= !predicateFn(item)
-
-            return shouldTake
-                ? aggregator(result, item, token)
-                : result;
-        }
-    }
-);
+        };
 
 module.exports = {
     mapReducer,
